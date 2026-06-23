@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<title>AventeQ — AI for real operations</title>
+<meta name="description" content="AventeQ helps accounting firms, law firms, manufacturers, and logistics companies implement AI across their operations — through consulting, custom systems, and the training to make it stick.">
+<meta property="og:title" content="AventeQ — AI for real operations">
+<meta property="og:description" content="AI consulting, implementation, and training for operationally complex businesses.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2314130F'/%3E%3Ctext x='28' y='70' font-family='Georgia,serif' font-size='58' fill='%23F4F1E9'%3EA%3C/text%3E%3Ccircle cx='74' cy='62' r='7' fill='%23C2552E'/%3E%3C/svg%3E">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F4F1E9; -webkit-font-smoothing: antialiased; }
+  ::selection { background: #16324F; color: #F4F1E9; }
+  @keyframes aq-drift { from { transform: translateY(0); } to { transform: translateY(-24px); } }
+  @keyframes aq-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+  @keyframes aq-rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+  @keyframes aq-pagefade { from { transform: translateY(8px); } to { transform: none; } }
+  main { animation: aq-pagefade 0.42s ease; }
+
+  /* Focus visibility */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid #16324F; outline-offset: 2px; border-radius: 4px;
+  }
+
+  /* Respect reduced motion everywhere, including the live readout */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  /* Motion: scroll-driven reveals, only where supported and motion is allowed */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      main > section { animation: aq-rise both; animation-timeline: view(); animation-range: entry 2% entry 40%; }
+    }
+  }
+
+  /* Responsive */
+  .aq-nav-desktop { display: flex; align-items: center; gap: 2px; }
+  .aq-burger { display: none; }
+  @media (max-width: 940px) {
+    .aq-nav-desktop { display: none !important; }
+    .aq-burger { display: inline-flex !important; }
+    [style*="max-width: 1320px"], [style*="max-width: 1040px"] { padding-left: 24px !important; padding-right: 24px !important; }
+    [style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: 1fr !important; }
+    [style*="grid-template-columns: repeat(6, 1fr)"] { grid-template-columns: 1fr 1fr !important; }
+    [style*="grid-template-columns: 1.1fr 0.9fr"] { grid-template-columns: 1fr !important; }
+    [style*="grid-template-columns: 1.05fr 0.95fr"] { grid-template-columns: 1fr !important; gap: 40px !important; }
+    [style*="grid-template-columns: 1fr 1.1fr"] { grid-template-columns: 1fr !important; }
+    [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+    [style*="grid-template-columns: 0.5fr 1.5fr"] { grid-template-columns: 1fr !important; }
+    [style*="grid-template-columns: 0.9fr 1.4fr 0.7fr"] { grid-template-columns: 1fr !important; gap: 18px !important; }
+    [style*="grid-template-columns: 60px 1fr 2fr auto"] { grid-template-columns: 1fr !important; gap: 8px !important; }
+    [style*="1.5fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; }
+    [style*="font-size: 76px"] { font-size: 46px !important; }
+    [style*="font-size: 60px"] { font-size: 40px !important; }
+    [style*="font-size: 56px"] { font-size: 40px !important; }
+    [style*="font-size: 44px"] { font-size: 32px !important; }
+    [style*="font-size: 42px"] { font-size: 31px !important; }
+  }
+  @media (max-width: 700px) {
+    [style*="0 24px 60px -28px"] { display: none !important; }
+  }
+  @media (max-width: 560px) {
+    [style*="grid-template-columns: repeat(6, 1fr)"] { grid-template-columns: 1fr !important; }
+    [style*="1.5fr 1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+    [style*="font-size: 76px"] { font-size: 38px !important; }
+    [style*="font-size: 60px"] { font-size: 34px !important; }
+    [style*="font-size: 56px"] { font-size: 34px !important; }
+  }
+</style>
+</helmet>
+
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="#14130F"/><text x="22" y="68" font-family="Georgia,serif" font-size="52" fill="#F4F1E9">A</text><circle cx="70" cy="60" r="7" fill="#C2552E"/></svg>
+</template>
+
+<div style="font-family: 'Hanken Grotesk', sans-serif; color: #17150F; background: #F4F1E9; min-height: 100vh; position: relative; overflow-x: hidden;">
+
+  <!-- ===== HEADER ===== -->
+  <header style="position: sticky; top: 0; z-index: 50; background: rgba(244,241,233,0.82); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(23,21,15,0.10);">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 0 40px; height: 74px; display: flex; align-items: center; justify-content: space-between;">
+      <button onClick="{{ goHome }}" style="display: flex; align-items: baseline; gap: 9px; background: none; border: none; cursor: pointer; padding: 0;">
+        <span style="font-family: 'Newsreader', serif; font-size: 24px; font-weight: 500; letter-spacing: -0.01em; color: #17150F;">AventeQ AI</span>
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #C2552E; transform: translateY(-3px);"></span>
+      </button>
+      <nav class="aq-nav-desktop">
+        <button onClick="{{ goSolutions }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 14px; font-weight: 500; color: {{ navSolutionsColor }}; background: none; border: none; border-bottom: 2px solid {{ navSolutionsUL }}; cursor: pointer; padding: 9px 13px 7px; border-radius: 0;">Solutions</button>
+        <button onClick="{{ goIndustries }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 14px; font-weight: 500; color: {{ navIndustriesColor }}; background: none; border: none; border-bottom: 2px solid {{ navIndustriesUL }}; cursor: pointer; padding: 9px 13px 7px; border-radius: 0;">Industries</button>
+        <button onClick="{{ goTraining }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 14px; font-weight: 500; color: {{ navTrainingColor }}; background: none; border: none; border-bottom: 2px solid {{ navTrainingUL }}; cursor: pointer; padding: 9px 13px 7px; border-radius: 0;">AI Training</button>
+        <button onClick="{{ goCases }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 14px; font-weight: 500; color: {{ navCasesColor }}; background: none; border: none; border-bottom: 2px solid {{ navCasesUL }}; cursor: pointer; padding: 9px 13px 7px; border-radius: 0;">Case Studies</button>
+        <button onClick="{{ goAbout }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 14px; font-weight: 500; color: {{ navAboutColor }}; background: none; border: none; border-bottom: 2px solid {{ navAboutUL }}; cursor: pointer; padding: 9px 13px 7px; border-radius: 0;">About</button>
+        <button onClick="{{ goContact }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: #F4F1E9; background: #16324F; border: none; cursor: pointer; padding: 10px 18px; border-radius: 7px; margin-left: 12px; white-space: nowrap;" style-hover="background: #0F2438;">Book a session</button>
+      </nav>
+      <button class="aq-burger" onClick="{{ toggleNav }}" aria-label="Menu" aria-expanded="{{ navOpen }}" style="flex-direction: column; gap: 5px; align-items: center; justify-content: center; width: 42px; height: 42px; background: none; border: none; cursor: pointer; padding: 0;">
+        <span style="display: block; width: 22px; height: 2px; background: #17150F;"></span>
+        <span style="display: block; width: 22px; height: 2px; background: #17150F;"></span>
+        <span style="display: block; width: 22px; height: 2px; background: #17150F;"></span>
+      </button>
+    </div>
+    <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="border-top: 1px solid rgba(23,21,15,0.1); background: #F4F1E9; padding: 10px 24px 18px; display: grid; gap: 2px;">
+      <button onClick="{{ goSolutions }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 13px 6px; font-family: 'Hanken Grotesk', sans-serif; font-size: 16px; color: #17150F; border-bottom: 1px solid rgba(23,21,15,0.07);">Solutions</button>
+      <button onClick="{{ goIndustries }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 13px 6px; font-family: 'Hanken Grotesk', sans-serif; font-size: 16px; color: #17150F; border-bottom: 1px solid rgba(23,21,15,0.07);">Industries</button>
+      <button onClick="{{ goTraining }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 13px 6px; font-family: 'Hanken Grotesk', sans-serif; font-size: 16px; color: #17150F; border-bottom: 1px solid rgba(23,21,15,0.07);">AI Training</button>
+      <button onClick="{{ goCases }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 13px 6px; font-family: 'Hanken Grotesk', sans-serif; font-size: 16px; color: #17150F; border-bottom: 1px solid rgba(23,21,15,0.07);">Case Studies</button>
+      <button onClick="{{ goAbout }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 13px 6px; font-family: 'Hanken Grotesk', sans-serif; font-size: 16px; color: #17150F; border-bottom: 1px solid rgba(23,21,15,0.07);">About</button>
+      <button onClick="{{ goContact }}" style="text-align: left; background: #16324F; color: #F4F1E9; border: none; cursor: pointer; padding: 14px 12px; border-radius: 8px; font-family: 'Hanken Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-top: 10px;">Book a session</button>
+    </div>
+    </sc-if>
+  </header>
+
+  <!-- ===== HOME ===== -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <main>
+
+    <!-- HERO -->
+    <section data-screen-label="Home" style="max-width: 1320px; margin: 0 auto; padding: 64px 40px 72px;">
+      <div style="display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 64px; align-items: center;">
+       <div>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #C2552E; text-transform: uppercase; margin-bottom: 30px;">AI Transformation Partner</div>
+      <h1 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 76px; line-height: 1.03; letter-spacing: -0.02em; margin: 0; max-width: 15ch; color: #17150F;">AI for real operations. Not just experiments.</h1>
+      <p style="font-size: 19px; line-height: 1.6; color: #4A463C; max-width: 56ch; margin: 34px 0 0;">AventeQ helps accounting firms, law firms, manufacturers, and logistics companies implement AI across their workflows — through consulting, custom systems, and the training to make it stick.</p>
+      <div style="display: flex; gap: 14px; margin-top: 40px; flex-wrap: wrap;">
+        <button onClick="{{ goContact }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: #F4F1E9; background: #16324F; border: none; cursor: pointer; padding: 15px 28px; border-radius: 8px;" style-hover="background: #0F2438;">Book an AI Strategy Session</button>
+        <button onClick="{{ goSolutions }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: #17150F; background: none; border: 1px solid rgba(23,21,15,0.22); cursor: pointer; padding: 15px 28px; border-radius: 8px;" style-hover="border-color: #17150F;">Explore use cases</button>
+      </div>
+       </div>
+       <!-- operational readout panel -->
+       <div style="background: #14130F; border-radius: 14px; padding: 26px 26px 28px; box-shadow: 0 24px 60px -28px rgba(20,19,15,0.5);">
+         <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; border-bottom: 1px solid rgba(244,241,233,0.14);">
+           <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(244,241,233,0.55);">aventeq://operations</span>
+           <span style="display: inline-flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6FBF95; text-transform: uppercase;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #6FBF95; animation: aq-blink 1.8s ease-in-out infinite;"></span>live</span>
+         </div>
+         <div style="display: grid; gap: 16px; padding: 22px 0 4px;">
+           <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px;">
+             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(244,241,233,0.85);">reconciliation-agent</span>
+             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #6FBF95;">1,284 / 1,284 matched</span>
+           </div>
+           <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px;">
+             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(244,241,233,0.85);">procurement-agent</span>
+             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #E6A07B;">vendor delay · HIGH ▲</span>
+           </div>
+           <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px;">
+             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(244,241,233,0.85);">notice-agent</span>
+             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: rgba(244,241,233,0.6);">3 notices triaged</span>
+           </div>
+           <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px;">
+             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(244,241,233,0.85);">shipment-intel</span>
+             <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #6FBF95;">ETA variance −5.2d</span>
+           </div>
+         </div>
+         <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(244,241,233,0.14); font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #E6A07B;">&gt; optimizing workflows<span style="display: inline-block; width: 8px; height: 15px; background: #E6A07B; margin-left: 4px; transform: translateY(2px); animation: aq-blink 1.1s step-end infinite;"></span></div>
+       </div>
+      </div>
+      <div style="height: 1px; background: rgba(23,21,15,0.12); margin: 64px 0 0;"></div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(23,21,15,0.12);">
+        <div style="background: #F4F1E9; padding: 30px 28px 4px 0;">
+          <div style="font-family: 'Newsreader', serif; font-size: 46px; font-weight: 400; color: #16324F; letter-spacing: -0.01em;">4 sectors</div>
+          <div style="font-size: 14.5px; color: #4A463C; margin-top: 6px; max-width: 26ch;">accounting, law, manufacturing, and logistics — where we go deep, not wide.</div>
+        </div>
+        <div style="background: #F4F1E9; padding: 30px 28px 4px;">
+          <div style="font-family: 'Newsreader', serif; font-size: 46px; font-weight: 400; color: #16324F; letter-spacing: -0.01em;">6 steps</div>
+          <div style="font-size: 14.5px; color: #4A463C; margin-top: 6px; max-width: 26ch;">a proven method from readiness assessment to continuous optimization.</div>
+        </div>
+        <div style="background: #F4F1E9; padding: 30px 0 4px 28px;">
+          <div style="font-family: 'Newsreader', serif; font-size: 46px; font-weight: 400; color: #16324F; letter-spacing: -0.01em;">Weeks</div>
+          <div style="font-size: 14.5px; color: #4A463C; margin-top: 6px; max-width: 26ch;">to your first AI system running in production — not quarters.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust bar -->
+    <section style="border-top: 1px solid rgba(23,21,15,0.12); border-bottom: 1px solid rgba(23,21,15,0.12); background: #EFEBE1;">
+      <div style="max-width: 1320px; margin: 0 auto; padding: 26px 40px; display: flex; align-items: center; gap: 40px; flex-wrap: wrap;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: #8A8475; text-transform: uppercase; white-space: nowrap;">Trusted in regulated, audited industries</span>
+        <div style="display: flex; gap: 40px; flex-wrap: wrap; align-items: center; opacity: 0.82;">
+          <span style="font-family: 'Newsreader', serif; font-size: 20px; color: #17150F;">Mid-size CA firms</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 20px; color: #17150F;">Component manufacturers</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 20px; color: #17150F;">Freight &amp; 3PL operators</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 20px; color: #17150F;">Boutique law firms</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- What We Do — 3 pillars (dark) -->
+    <section style="background: #14130F; color: #F4F1E9;">
+      <div style="max-width: 1320px; margin: 0 auto; padding: 92px 40px;">
+        <div style="display: flex; justify-content: space-between; align-items: end; margin-bottom: 52px; flex-wrap: wrap; gap: 20px;">
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.16em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">01 — What we do</div>
+            <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 44px; line-height: 1.1; letter-spacing: -0.015em; margin: 0; color: #F4F1E9;">Three pillars, one transformation.</h2>
+          </div>
+          <button onClick="{{ goSolutions }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 14.5px; font-weight: 600; color: #F4F1E9; background: none; border: 1px solid rgba(244,241,233,0.3); cursor: pointer; padding: 12px 22px; border-radius: 8px; white-space: nowrap;" style-hover="border-color:#F4F1E9;">All solutions ↗</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(244,241,233,0.14);">
+          <div style="background: #14130F; padding: 36px 30px 40px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(244,241,233,0.5);">assess · prioritize · roadmap</div>
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 27px; margin: 18px 0 12px; color: #F4F1E9;">AI Consulting</h3>
+            <p style="font-size: 15px; line-height: 1.6; color: rgba(244,241,233,0.66); margin: 0;">We find where AI actually pays off, size the ROI, and hand you a transformation roadmap you can act on.</p>
+          </div>
+          <div style="background: #14130F; padding: 36px 30px 40px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(244,241,233,0.5);">build · integrate · deploy</div>
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 27px; margin: 18px 0 12px; color: #F4F1E9;">AI Implementation</h3>
+            <p style="font-size: 15px; line-height: 1.6; color: rgba(244,241,233,0.66); margin: 0;">We design and deploy AI agents, automations, and private systems that run inside your day-to-day operations.</p>
+          </div>
+          <div style="background: #14130F; padding: 36px 30px 40px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(244,241,233,0.5);">upskill · adopt · govern</div>
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 27px; margin: 18px 0 12px; color: #F4F1E9;">AI Training &amp; Enablement</h3>
+            <p style="font-size: 15px; line-height: 1.6; color: rgba(244,241,233,0.66); margin: 0;">We turn “we have AI” into teams who use it well — safely, productively, and every day.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Industries strip -->
+    <section style="max-width: 1320px; margin: 0 auto; padding: 92px 40px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.16em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">02 — Industries</div>
+      <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 44px; line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 48px; color: #17150F; max-width: 18ch;">We go deep in four industries.</h2>
+      <div style="border-top: 1px solid rgba(23,21,15,0.14);">
+        <button onClick="{{ goIndustries }}" style="width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid rgba(23,21,15,0.14); cursor: pointer; padding: 30px 8px; display: grid; grid-template-columns: 60px 1fr 2fr auto; gap: 30px; align-items: center;" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99;">A1</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 28px; color: #17150F;">Accounting &amp; Tax</span>
+          <span style="font-size: 15.5px; color: #4A463C; line-height: 1.55;">Reconciliation, tax optimization, notice handling, and client communication — automated.</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #16324F;">↗</span>
+        </button>
+        <button onClick="{{ goIndustries }}" style="width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid rgba(23,21,15,0.14); cursor: pointer; padding: 30px 8px; display: grid; grid-template-columns: 60px 1fr 2fr auto; gap: 30px; align-items: center;" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99;">M2</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 28px; color: #17150F;">Manufacturing</span>
+          <span style="font-size: 15.5px; color: #4A463C; line-height: 1.55;">Production intelligence, procurement agents, vendor coordination, and predictive alerts.</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #16324F;">↗</span>
+        </button>
+        <button onClick="{{ goIndustries }}" style="width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid rgba(23,21,15,0.14); cursor: pointer; padding: 30px 8px; display: grid; grid-template-columns: 60px 1fr 2fr auto; gap: 30px; align-items: center;" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99;">L3</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 28px; color: #17150F;">Logistics</span>
+          <span style="font-size: 15.5px; color: #4A463C; line-height: 1.55;">Shipment intelligence, delay prediction, escalation systems, and live visibility dashboards.</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #16324F;">↗</span>
+        </button>
+        <button onClick="{{ goIndustries }}" style="width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid rgba(23,21,15,0.14); cursor: pointer; padding: 30px 8px; display: grid; grid-template-columns: 60px 1fr 2fr auto; gap: 30px; align-items: center;" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99;">F4</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 28px; color: #17150F;">Law Firms</span>
+          <span style="font-size: 15.5px; color: #4A463C; line-height: 1.55;">Legal research, contract intelligence, matter management, and compliance — connected.</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #16324F;">↗</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- How We Work — 6 steps -->
+    <section style="background: #EFEBE1; border-top: 1px solid rgba(23,21,15,0.12);">
+      <div style="max-width: 1320px; margin: 0 auto; padding: 88px 40px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.16em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">03 — How we work</div>
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 44px; line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 50px; color: #17150F; max-width: 20ch;">Our six-step transformation method.</h2>
+        <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: rgba(23,21,15,0.14); border: 1px solid rgba(23,21,15,0.14);">
+          <div style="background: #F4F1E9; padding: 26px 20px 30px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">01</div>
+            <div style="font-family: 'Newsreader', serif; font-size: 20px; line-height: 1.2; margin-top: 14px; color: #17150F;">AI Readiness Assessment</div>
+          </div>
+          <div style="background: #F4F1E9; padding: 26px 20px 30px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">02</div>
+            <div style="font-family: 'Newsreader', serif; font-size: 20px; line-height: 1.2; margin-top: 14px; color: #17150F;">Operational Workflow Mapping</div>
+          </div>
+          <div style="background: #F4F1E9; padding: 26px 20px 30px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">03</div>
+            <div style="font-family: 'Newsreader', serif; font-size: 20px; line-height: 1.2; margin-top: 14px; color: #17150F;">Identify High-Impact Use Cases</div>
+          </div>
+          <div style="background: #F4F1E9; padding: 26px 20px 30px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">04</div>
+            <div style="font-family: 'Newsreader', serif; font-size: 20px; line-height: 1.2; margin-top: 14px; color: #17150F;">Build &amp; Deploy AI Systems</div>
+          </div>
+          <div style="background: #F4F1E9; padding: 26px 20px 30px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">05</div>
+            <div style="font-family: 'Newsreader', serif; font-size: 20px; line-height: 1.2; margin-top: 14px; color: #17150F;">Train Teams</div>
+          </div>
+          <div style="background: #F4F1E9; padding: 26px 20px 30px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">06</div>
+            <div style="font-family: 'Newsreader', serif; font-size: 20px; line-height: 1.2; margin-top: 14px; color: #17150F;">Continuous Optimization</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Training band -->
+    <section style="background: #16324F; color: #F4F1E9;">
+      <div style="max-width: 1320px; margin: 0 auto; padding: 84px 40px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: center;">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.16em; color: #E6A07B; text-transform: uppercase; margin-bottom: 18px;">04 — AI Training</div>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 42px; line-height: 1.12; letter-spacing: -0.015em; margin: 0; color: #F4F1E9;">The technology is ready. Most teams aren't.</h2>
+          <p style="font-size: 17px; line-height: 1.64; color: rgba(244,241,233,0.72); margin: 24px 0 32px; max-width: 50ch;">We run corporate AI workshops that take leaders and operators from curiosity to capability — tailored by role, from CXOs to finance, manufacturing, and logistics teams.</p>
+          <button onClick="{{ goTraining }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: #16324F; background: #F4F1E9; border: none; cursor: pointer; padding: 14px 26px; border-radius: 8px;" style-hover="background:#fff;">See training programs ↗</button>
+        </div>
+        <div style="display: grid; gap: 1px; background: rgba(244,241,233,0.18); border: 1px solid rgba(244,241,233,0.18); border-radius: 10px; overflow: hidden;">
+          <div style="background: #16324F; padding: 16px 20px; font-size: 15px; color: rgba(244,241,233,0.9);">AI for Business Leaders</div>
+          <div style="background: #16324F; padding: 16px 20px; font-size: 15px; color: rgba(244,241,233,0.9);">AI for Accountants &amp; CAs</div>
+          <div style="background: #16324F; padding: 16px 20px; font-size: 15px; color: rgba(244,241,233,0.9);">AI for Operations Teams</div>
+          <div style="background: #16324F; padding: 16px 20px; font-size: 15px; color: rgba(244,241,233,0.9);">Prompt Engineering for Enterprise</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section style="max-width: 1320px; margin: 0 auto; padding: 40px 40px 96px;">
+      <figure style="margin: 0; max-width: 62ch;">
+        <div style="font-family: 'Newsreader', serif; font-size: 60px; line-height: 0; color: #C2552E; height: 28px;">“</div>
+        <blockquote style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 36px; line-height: 1.3; letter-spacing: -0.01em; color: #17150F; margin: 0; text-wrap: pretty;">They didn't sell us a model. They sat inside our month-end close, found the three things actually worth automating, shipped them — then trained our seniors to own it.</blockquote>
+        <figcaption style="margin-top: 30px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <span style="width: 44px; height: 1px; background: #C2552E;"></span>
+          <span style="font-size: 15px; color: #4A463C;">Managing Partner, mid-size CA firm <span style="color: #B0AA99;"></span></span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- Case studies teaser -->
+    <section style="max-width: 1320px; margin: 0 auto; padding: 92px 40px;">
+      <div style="display: flex; justify-content: space-between; align-items: end; margin-bottom: 44px; flex-wrap: wrap; gap: 18px;">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.16em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">05 — Case studies</div>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 40px; line-height: 1.1; letter-spacing: -0.015em; margin: 0; color: #17150F;">AI that earned its place.</h2>
+        </div>
+        <button onClick="{{ goCases }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 14.5px; font-weight: 600; color: #17150F; background: none; border: 1px solid rgba(23,21,15,0.22); cursor: pointer; padding: 12px 22px; border-radius: 8px;" style-hover="border-color:#17150F;">All case studies ↗</button>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+        <button onClick="{{ goCases }}" style="text-align: left; background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); cursor: pointer; padding: 30px; border-radius: 12px;" style-hover="border-color: rgba(23,21,15,0.28);">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8475; text-transform: uppercase;">Accounting</div>
+          <div style="font-family: 'Newsreader', serif; font-size: 38px; color: #16324F; margin: 18px 0 6px;">70%</div>
+          <h3 style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; font-size: 16px; line-height: 1.4; margin: 0; color: #17150F;">less time on month-end reconciliation at a 40-partner CA firm</h3>
+        </button>
+        <button onClick="{{ goCases }}" style="text-align: left; background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); cursor: pointer; padding: 30px; border-radius: 12px;" style-hover="border-color: rgba(23,21,15,0.28);">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8475; text-transform: uppercase;">Manufacturing</div>
+          <div style="font-family: 'Newsreader', serif; font-size: 38px; color: #16324F; margin: 18px 0 6px;">5 days</div>
+          <h3 style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; font-size: 16px; line-height: 1.4; margin: 0; color: #17150F;">earlier warning on vendor delays with a procurement agent</h3>
+        </button>
+        <button onClick="{{ goCases }}" style="text-align: left; background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); cursor: pointer; padding: 30px; border-radius: 12px;" style-hover="border-color: rgba(23,21,15,0.28);">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8475; text-transform: uppercase;">Logistics</div>
+          <div style="font-family: 'Newsreader', serif; font-size: 38px; color: #16324F; margin: 18px 0 6px;">3×</div>
+          <h3 style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 600; font-size: 16px; line-height: 1.4; margin: 0; color: #17150F;">faster shipment-exception handling after workflow automation</h3>
+        </button>
+      </div>
+    </section>
+
+    <!-- Security & data -->
+    <section style="background: #14130F; color: #F4F1E9;">
+      <div style="max-width: 1320px; margin: 0 auto; padding: 92px 40px;">
+        <div style="display: flex; justify-content: space-between; align-items: end; margin-bottom: 48px; flex-wrap: wrap; gap: 20px;">
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.16em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">06 — Security &amp; data</div>
+            <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 44px; line-height: 1.1; letter-spacing: -0.015em; margin: 0; color: #F4F1E9; max-width: 20ch;">Built to be trusted with your data.</h2>
+          </div>
+          <p style="font-size: 15px; line-height: 1.6; color: rgba(244,241,233,0.6); margin: 0; max-width: 34ch;">We work inside regulated, audited industries. Trust isn't a feature here — it's the precondition.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(244,241,233,0.14);">
+          <div style="background: #14130F; padding: 32px 28px 38px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(244,241,233,0.5);">/ ownership</div>
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 23px; margin: 16px 0 10px; color: #F4F1E9;">Your data stays yours</h3>
+            <p style="font-size: 14.5px; line-height: 1.6; color: rgba(244,241,233,0.66); margin: 0;">We never train shared or public models on your documents. Your data powers your systems — and only yours.</p>
+          </div>
+          <div style="background: #14130F; padding: 32px 28px 38px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(244,241,233,0.5);">/ deployment</div>
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 23px; margin: 16px 0 10px; color: #F4F1E9;">Private &amp; on-prem options</h3>
+            <p style="font-size: 14.5px; line-height: 1.6; color: rgba(244,241,233,0.66); margin: 0;">Deploy behind your own firewall or in your cloud. Sensitive workloads never have to leave your environment.</p>
+          </div>
+          <div style="background: #14130F; padding: 32px 28px 38px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(244,241,233,0.5);">/ control</div>
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 23px; margin: 16px 0 10px; color: #F4F1E9;">Access &amp; audit trail</h3>
+            <p style="font-size: 14.5px; line-height: 1.6; color: rgba(244,241,233,0.66); margin: 0;">Role-based access plus an immutable log of every action — so you can always answer who did what, and when.</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 36px; padding-top: 32px; border-top: 1px solid rgba(244,241,233,0.14);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: rgba(244,241,233,0.45); text-transform: uppercase; margin-right: 8px;">Aligned to</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(244,241,233,0.82); border: 1px solid rgba(244,241,233,0.22); padding: 8px 16px; border-radius: 100px;">SOC 2 Type II</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(244,241,233,0.82); border: 1px solid rgba(244,241,233,0.22); padding: 8px 16px; border-radius: 100px;">ISO 27001</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(244,241,233,0.82); border: 1px solid rgba(244,241,233,0.22); padding: 8px 16px; border-radius: 100px;">GDPR</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(244,241,233,0.82); border: 1px solid rgba(244,241,233,0.22); padding: 8px 16px; border-radius: 100px;">India DPDP</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Insights -->
+    <section style="max-width: 1320px; margin: 0 auto; padding: 92px 40px 0;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.16em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">07 — Insights</div>
+      <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 44px; line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 12px; color: #17150F; max-width: 18ch;">Notes from inside the work.</h2>
+      <p style="font-size: 15px; color: #8A8475; margin: 0 0 40px;">Field notes from our engagements — published periodically.</p>
+      <div style="border-top: 1px solid rgba(23,21,15,0.14);">
+        <div style="display: grid; grid-template-columns: 0.9fr 1.4fr 0.7fr; gap: 30px; align-items: baseline; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8475; text-transform: uppercase;">Accounting</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 23px; color: #17150F; line-height: 1.25;">Where AI actually pays off in month-end close</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99; text-align: right;">6 min read</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 0.9fr 1.4fr 0.7fr; gap: 30px; align-items: baseline; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8475; text-transform: uppercase;">Manufacturing</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 23px; color: #17150F; line-height: 1.25;">Procurement agents: catching vendor delays before they land</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99; text-align: right;">5 min read</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 0.9fr 1.4fr 0.7fr; gap: 30px; align-items: baseline; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #8A8475; text-transform: uppercase;">Enablement</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 23px; color: #17150F; line-height: 1.25;">Why AI training fails — and what makes it stick</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99; text-align: right;">7 min read</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section style="max-width: 1040px; margin: 0 auto; padding: 92px 40px 96px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.16em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">08 — FAQ</div>
+      <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 44px; line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 44px; color: #17150F; max-width: 18ch;">The questions we hear first.</h2>
+      <div style="border-top: 1px solid rgba(23,21,15,0.14);">
+        <sc-for list="{{ faqs }}" as="item" hint-placeholder-count="5">
+          <div style="border-bottom: 1px solid rgba(23,21,15,0.14);">
+            <button onClick="{{ item.toggle }}" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 26px 8px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+              <span style="font-family: 'Newsreader', serif; font-size: 23px; color: #17150F; line-height: 1.3;">{{ item.q }}</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; color: #C2552E; flex: none;">{{ item.sign }}</span>
+            </button>
+            <sc-if value="{{ item.open }}" hint-placeholder-val="{{ false }}">
+              <p style="font-size: 16px; line-height: 1.64; color: #4A463C; margin: 0; padding: 0 56px 28px 8px; max-width: 72ch;">{{ item.a }}</p>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+  </main>
+  </sc-if>
+
+  <!-- ===== SOLUTIONS ===== -->
+  <sc-if value="{{ isSolutions }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 80px 40px 56px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #C2552E; text-transform: uppercase; margin-bottom: 26px;">Solutions</div>
+      <h1 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 60px; line-height: 1.06; letter-spacing: -0.02em; margin: 0; max-width: 17ch; color: #17150F;">AI consulting, implementation, and training — packaged to ship.</h1>
+      <p style="font-size: 19px; line-height: 1.6; color: #4A463C; max-width: 56ch; margin: 30px 0 0;">Four offerings that take you from “where do we start?” to AI systems running in production and teams who run them well.</p>
+    </section>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 0 40px 96px; display: grid; gap: 24px;">
+      <!-- consulting -->
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 48px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px;">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">assess · prioritize · roadmap</div>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 38px; margin: 14px 0 16px; color: #17150F;">AI Consulting</h2>
+          <p style="font-size: 16.5px; line-height: 1.64; color: #4A463C; margin: 0;">We identify high-impact AI opportunities and build a transformation roadmap grounded in your operations and your numbers.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: rgba(23,21,15,0.1); border-radius: 10px; overflow: hidden; align-self: start;">
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">AI Readiness Assessment</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">Workflow Mapping</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">Opportunity Identification</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">ROI Analysis</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F; grid-column: span 2;">AI Strategy &amp; Roadmap</div>
+        </div>
+      </div>
+      <!-- implementation -->
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 48px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px;">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">build · integrate · deploy</div>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 38px; margin: 14px 0 16px; color: #17150F;">AI Implementation</h2>
+          <p style="font-size: 16.5px; line-height: 1.64; color: #4A463C; margin: 0;">We design and deploy AI systems that integrate into day-to-day operations — agents, automations, and private AI that lives behind your firewall.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: rgba(23,21,15,0.1); border-radius: 10px; overflow: hidden; align-self: start;">
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">AI Agents</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">Workflow Automation</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">Private AI Systems</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">Enterprise Integrations</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F; grid-column: span 2;">Operational Dashboards</div>
+        </div>
+      </div>
+      <!-- training -->
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 48px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px;">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">upskill · adopt · govern</div>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 38px; margin: 14px 0 16px; color: #17150F;">AI Training</h2>
+          <p style="font-size: 16.5px; line-height: 1.64; color: #4A463C; margin: 0;">We train teams to adopt AI safely and effectively — because the biggest barrier to AI isn't the model, it's the people expected to use it.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: rgba(23,21,15,0.1); border-radius: 10px; overflow: hidden; align-self: start;">
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">Executive Workshops</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">Employee AI Training</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">Prompt Engineering</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F;">AI Tools Training</div>
+          <div style="background: #F4F1E9; padding: 16px 18px; font-size: 14.5px; color: #17150F; grid-column: span 2;">Responsible AI Adoption</div>
+        </div>
+      </div>
+      <!-- operational intelligence (dark) -->
+      <div style="background: #14130F; border-radius: 14px; padding: 48px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px;">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #E6A07B;">monitor · coordinate · optimize</div>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 38px; margin: 14px 0 16px; color: #F4F1E9;">Operational Intelligence</h2>
+          <p style="font-size: 16.5px; line-height: 1.64; color: rgba(244,241,233,0.68); margin: 0;">A living layer over your operations — surfacing risks, coordinating across teams, and optimizing the decisions that run the business.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: rgba(244,241,233,0.16); border-radius: 10px; overflow: hidden; align-self: start;">
+          <div style="background: #1B1A14; padding: 16px 18px; font-size: 14.5px; color: #F4F1E9;">Production Intelligence</div>
+          <div style="background: #1B1A14; padding: 16px 18px; font-size: 14.5px; color: #F4F1E9;">Procurement Agents</div>
+          <div style="background: #1B1A14; padding: 16px 18px; font-size: 14.5px; color: #F4F1E9;">Predictive Alerts</div>
+          <div style="background: #1B1A14; padding: 16px 18px; font-size: 14.5px; color: #F4F1E9;">Shipment Intelligence</div>
+          <div style="background: #1B1A14; padding: 16px 18px; font-size: 14.5px; color: #F4F1E9; grid-column: span 2;">Operational Dashboards</div>
+        </div>
+      </div>
+    </section>
+    <section style="background: #EFEBE1; border-top: 1px solid rgba(23,21,15,0.12);">
+      <div style="max-width: 1320px; margin: 0 auto; padding: 88px 40px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.16em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">How engagements work</div>
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 44px; line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 50px; color: #17150F; max-width: 20ch;">Start small. Prove it. Then scale.</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(23,21,15,0.14); border: 1px solid rgba(23,21,15,0.14);">
+          <div style="background: #F4F1E9; padding: 34px 30px 38px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">Phase 01</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #8A8475;">2–4 weeks</span>
+            </div>
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 26px; margin: 16px 0 10px; color: #17150F;">Pilot</h3>
+            <p style="font-size: 14.5px; line-height: 1.6; color: #4A463C; margin: 0;">We prove one high-value use case end to end — real data, real workflow, measurable result.</p>
+          </div>
+          <div style="background: #F4F1E9; padding: 34px 30px 38px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">Phase 02</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #8A8475;">4–8 weeks</span>
+            </div>
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 26px; margin: 16px 0 10px; color: #17150F;">Build &amp; Deploy</h3>
+            <p style="font-size: 14.5px; line-height: 1.6; color: #4A463C; margin: 0;">We ship production-grade systems into your operations and integrate with the tools you already run.</p>
+          </div>
+          <div style="background: #F4F1E9; padding: 34px 30px 38px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">Phase 03</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #8A8475;">Ongoing</span>
+            </div>
+            <h3 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 26px; margin: 16px 0 10px; color: #17150F;">Scale &amp; Enable</h3>
+            <p style="font-size: 14.5px; line-height: 1.6; color: #4A463C; margin: 0;">We expand coverage across teams and train your people to own and extend the systems themselves.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <!-- ===== INDUSTRIES ===== -->
+  <sc-if value="{{ isIndustries }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 80px 40px 56px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #C2552E; text-transform: uppercase; margin-bottom: 26px;">Industries</div>
+      <h1 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 60px; line-height: 1.06; letter-spacing: -0.02em; margin: 0; max-width: 16ch; color: #17150F;">We know your operations before we build.</h1>
+      <p style="font-size: 19px; line-height: 1.6; color: #4A463C; max-width: 54ch; margin: 30px 0 0;">Four industries, each with its own bottlenecks. We map the pain, then deploy the AI that removes it.</p>
+    </section>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 0 40px 96px; display: grid; gap: 24px;">
+      <!-- accounting -->
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 44px;">
+        <div style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 32px;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99;">A1</span>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 34px; margin: 0; color: #17150F;">Accounting &amp; Tax Consulting</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">The pain</div>
+            <div style="display: grid; gap: 10px;">
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Manual reconciliations</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Tax planning bottlenecks</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Document collection</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Notice handling</div>
+              <div style="font-size: 15px; color: #4A463C;">Client follow-ups</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #2E7D5B; text-transform: uppercase; margin-bottom: 16px;">What we deploy</div>
+            <div style="display: grid; gap: 10px;">
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Intelligent Reconciliation</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Tax Optimization Agent</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Notice Analysis Agent</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Client Communication Automation</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500;">Compliance Workflows</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- manufacturing -->
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 44px;">
+        <div style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 32px;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99;">M2</span>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 34px; margin: 0; color: #17150F;">Manufacturing</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">The pain</div>
+            <div style="display: grid; gap: 10px;">
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Production delays</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Vendor coordination</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Procurement bottlenecks</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Reporting gaps</div>
+              <div style="font-size: 15px; color: #4A463C;">Operational visibility</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #2E7D5B; text-transform: uppercase; margin-bottom: 16px;">What we deploy</div>
+            <div style="display: grid; gap: 10px;">
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Production Intelligence</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Procurement Agents</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Vendor Coordination Systems</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Predictive Alerts</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500;">Operational Dashboards</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- logistics -->
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 44px;">
+        <div style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 32px;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99;">L3</span>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 34px; margin: 0; color: #17150F;">Logistics</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">The pain</div>
+            <div style="display: grid; gap: 10px;">
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Shipment delays</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Documentation issues</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Communication fragmentation</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Manual escalations</div>
+              <div style="font-size: 15px; color: #4A463C;">Poor visibility</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #2E7D5B; text-transform: uppercase; margin-bottom: 16px;">What we deploy</div>
+            <div style="display: grid; gap: 10px;">
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Shipment Intelligence</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Workflow Automation</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Delay Prediction</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Escalation Systems</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500;">Logistics Dashboards</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- law firms -->
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 44px;">
+        <div style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 32px;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #B0AA99;">F4</span>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 34px; margin: 0; color: #17150F;">Law Firms</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #C2552E; text-transform: uppercase; margin-bottom: 16px;">The pain</div>
+            <div style="display: grid; gap: 10px;">
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Manual document review</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Contract analysis &amp; clause extraction</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Legal research across sources</div>
+              <div style="font-size: 15px; color: #4A463C; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Matter &amp; deadline management</div>
+              <div style="font-size: 15px; color: #4A463C;">Compliance monitoring</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #2E7D5B; text-transform: uppercase; margin-bottom: 16px;">What we deploy</div>
+            <div style="display: grid; gap: 10px;">
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Legal Research Intelligence</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Contract Intelligence</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Matter Management Intelligence</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500; border-bottom: 1px solid rgba(23,21,15,0.08); padding-bottom: 10px;">Compliance Intelligence</div>
+              <div style="font-size: 15px; color: #17150F; font-weight: 500;">Client Operations Intelligence</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <!-- ===== AI TRAINING ===== -->
+  <sc-if value="{{ isTraining }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 80px 40px 56px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #C2552E; text-transform: uppercase; margin-bottom: 26px;">AI Training</div>
+      <h1 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 60px; line-height: 1.06; letter-spacing: -0.02em; margin: 0; max-width: 16ch; color: #17150F;">Your people are the bottleneck. We fix that.</h1>
+      <p style="font-size: 19px; line-height: 1.6; color: #4A463C; max-width: 56ch; margin: 30px 0 0;">Corporate AI workshops built around real operational work — not generic prompts. Tailored by role, run on-site or remote, and designed to leave teams genuinely capable.</p>
+    </section>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 0 40px 40px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.14em; color: #8A8475; text-transform: uppercase; margin-bottom: 22px;">Who it's for</div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <span style="font-size: 14.5px; color: #16324F; border: 1px solid rgba(22,50,79,0.25); padding: 9px 18px; border-radius: 100px;">CXOs</span>
+        <span style="font-size: 14.5px; color: #16324F; border: 1px solid rgba(22,50,79,0.25); padding: 9px 18px; border-radius: 100px;">Finance Teams</span>
+        <span style="font-size: 14.5px; color: #16324F; border: 1px solid rgba(22,50,79,0.25); padding: 9px 18px; border-radius: 100px;">Operations Teams</span>
+        <span style="font-size: 14.5px; color: #16324F; border: 1px solid rgba(22,50,79,0.25); padding: 9px 18px; border-radius: 100px;">Manufacturing Teams</span>
+        <span style="font-size: 14.5px; color: #16324F; border: 1px solid rgba(22,50,79,0.25); padding: 9px 18px; border-radius: 100px;">Logistics Teams</span>
+      </div>
+    </section>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 48px 40px 96px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.14em; color: #8A8475; text-transform: uppercase; margin-bottom: 8px;">Programs</div>
+      <div style="border-top: 1px solid rgba(23,21,15,0.14);">
+        <div style="display: grid; grid-template-columns: 50px 1fr; gap: 24px; align-items: center; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B0AA99;">01</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 26px; color: #17150F;">AI for Business Leaders</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 50px 1fr; gap: 24px; align-items: center; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B0AA99;">02</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 26px; color: #17150F;">AI for Accountants &amp; CAs</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 50px 1fr; gap: 24px; align-items: center; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B0AA99;">03</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 26px; color: #17150F;">AI for Operations Teams</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 50px 1fr; gap: 24px; align-items: center; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B0AA99;">04</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 26px; color: #17150F;">AI for Manufacturing</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 50px 1fr; gap: 24px; align-items: center; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B0AA99;">05</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 26px; color: #17150F;">AI for Logistics</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 50px 1fr; gap: 24px; align-items: center; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B0AA99;">06</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 26px; color: #17150F;">AI for Law Firms</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 50px 1fr; gap: 24px; align-items: center; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B0AA99;">07</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 26px; color: #17150F;">Prompt Engineering for Enterprise Teams</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 50px 1fr; gap: 24px; align-items: center; padding: 26px 8px; border-bottom: 1px solid rgba(23,21,15,0.14);" style-hover="background: rgba(22,50,79,0.04);">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B0AA99;">08</span>
+          <span style="font-family: 'Newsreader', serif; font-size: 26px; color: #17150F;">AI Productivity Workshops</span>
+        </div>
+      </div>
+      <div style="margin-top: 40px; background: #16324F; border-radius: 14px; padding: 40px 44px; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap;">
+        <div>
+          <div style="font-family: 'Newsreader', serif; font-size: 28px; color: #F4F1E9; margin-bottom: 6px;">Every program is tailored to your teams.</div>
+          <div style="font-size: 15px; color: rgba(244,241,233,0.7);">Run on-site or remote, shaped around your industry, roles, and the tools you already use.</div>
+        </div>
+        <button onClick="{{ goContact }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: #16324F; background: #F4F1E9; border: none; cursor: pointer; padding: 14px 26px; border-radius: 8px; white-space: nowrap;" style-hover="background:#fff;">Plan a program ↗</button>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <!-- ===== CASE STUDIES ===== -->
+  <sc-if value="{{ isCases }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 80px 40px 56px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #C2552E; text-transform: uppercase; margin-bottom: 26px;">Case Studies</div>
+      <h1 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 60px; line-height: 1.06; letter-spacing: -0.02em; margin: 0; max-width: 15ch; color: #17150F;">AI that earned its place in the work.</h1>
+      <p style="font-size: 19px; line-height: 1.6; color: #4A463C; max-width: 54ch; margin: 30px 0 0;">A few representative engagements across the industries we serve. Outcomes are illustrative and shared with client permission on request.</p>
+    </section>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 0 40px 96px; display: grid; gap: 24px;">
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 44px; display: grid; grid-template-columns: 0.9fr 1.4fr 0.7fr; gap: 40px; align-items: center;">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #8A8475; text-transform: uppercase;">Accounting &amp; Tax</div>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 30px; margin: 14px 0 0; color: #17150F; line-height: 1.15;">A 40-partner CA firm closes months in days.</h2>
+        </div>
+        <p style="font-size: 16px; line-height: 1.64; color: #4A463C; margin: 0;">We deployed an Intelligent Reconciliation agent and a Notice Analysis agent across the firm's tax practice. Manual matching dropped sharply and senior staff moved from data entry back to advisory work.</p>
+        <div style="text-align: right;">
+          <div style="font-family: 'Newsreader', serif; font-size: 52px; color: #16324F; line-height: 1;">70%</div>
+          <div style="font-size: 13.5px; color: #8A8475; margin-top: 8px;">less reconciliation time</div>
+        </div>
+      </div>
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 44px; display: grid; grid-template-columns: 0.9fr 1.4fr 0.7fr; gap: 40px; align-items: center;">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #8A8475; text-transform: uppercase;">Manufacturing</div>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 30px; margin: 14px 0 0; color: #17150F; line-height: 1.15;">A components maker sees vendor risk early.</h2>
+        </div>
+        <p style="font-size: 16px; line-height: 1.64; color: #4A463C; margin: 0;">A Procurement Agent now reads vendor communications and order histories, flagging likely delays before they hit the line — with predictive alerts routed straight to planners.</p>
+        <div style="text-align: right;">
+          <div style="font-family: 'Newsreader', serif; font-size: 52px; color: #16324F; line-height: 1;">5 days</div>
+          <div style="font-size: 13.5px; color: #8A8475; margin-top: 8px;">earlier delay warning</div>
+        </div>
+      </div>
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 44px; display: grid; grid-template-columns: 0.9fr 1.4fr 0.7fr; gap: 40px; align-items: center;">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #8A8475; text-transform: uppercase;">Logistics</div>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 30px; margin: 14px 0 0; color: #17150F; line-height: 1.15;">A freight operator clears exceptions faster.</h2>
+        </div>
+        <p style="font-size: 16px; line-height: 1.64; color: #4A463C; margin: 0;">Shipment Intelligence plus automated escalation workflows replaced a tangle of email threads, so exceptions get caught, routed, and resolved without manual chasing.</p>
+        <div style="text-align: right;">
+          <div style="font-family: 'Newsreader', serif; font-size: 52px; color: #16324F; line-height: 1;">3×</div>
+          <div style="font-size: 13.5px; color: #8A8475; margin-top: 8px;">faster exception handling</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <!-- ===== ABOUT ===== -->
+  <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 80px 40px 64px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #C2552E; text-transform: uppercase; margin-bottom: 26px;">About</div>
+      <h1 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 56px; line-height: 1.08; letter-spacing: -0.02em; margin: 0; max-width: 24ch; color: #17150F; text-wrap: pretty;">AventeQ is an AI transformation company for operationally complex businesses.</h1>
+      <p style="font-size: 19px; line-height: 1.6; color: #4A463C; max-width: 60ch; margin: 30px 0 0;">We help accounting firms, law firms, manufacturers, and logistics companies identify high-impact AI opportunities, implement intelligent operational systems, and train their workforce to adopt AI effectively.</p>
+    </section>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 0 40px 40px;">
+      <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 40px; padding: 44px 0; border-top: 1px solid rgba(23,21,15,0.14);">
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 28px; margin: 0; color: #17150F;">Mission</h2>
+        <p style="font-size: 18px; line-height: 1.6; color: #4A463C; margin: 0; max-width: 60ch;">To make AI useful where it's hardest — inside the messy, regulated, high-stakes operations that actually run a business. Not demos. Systems people rely on.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 40px; padding: 44px 0; border-top: 1px solid rgba(23,21,15,0.14);">
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 28px; margin: 0; color: #17150F;">Team</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+          <div>
+            <div style="height: 4px; width: 40px; background: #C2552E; margin-bottom: 16px;"></div>
+            <div style="font-family: 'Newsreader', serif; font-size: 21px; color: #17150F;">Founders</div>
+            <p style="font-size: 14.5px; line-height: 1.55; color: #4A463C; margin: 8px 0 0;">Operators and AI engineers who've shipped systems inside finance and industrial businesses.</p>
+          </div>
+          <div>
+            <div style="height: 4px; width: 40px; background: #16324F; margin-bottom: 16px;"></div>
+            <div style="font-family: 'Newsreader', serif; font-size: 21px; color: #17150F;">Delivery</div>
+            <p style="font-size: 14.5px; line-height: 1.55; color: #4A463C; margin: 8px 0 0;">Solution architects and ML engineers who build, integrate, and deploy in production.</p>
+          </div>
+          <div>
+            <div style="height: 4px; width: 40px; background: #2E7D5B; margin-bottom: 16px;"></div>
+            <div style="font-family: 'Newsreader', serif; font-size: 21px; color: #17150F;">Enablement</div>
+            <p style="font-size: 14.5px; line-height: 1.55; color: #4A463C; margin: 8px 0 0;">Trainers and change leads who get teams from skeptical to fluent.</p>
+          </div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 40px; padding: 44px 0; border-top: 1px solid rgba(23,21,15,0.14);">
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 28px; margin: 0; color: #17150F;">Advisors</h2>
+        <p style="font-size: 18px; line-height: 1.6; color: #4A463C; margin: 0; max-width: 60ch;">We work alongside senior advisors from accounting, manufacturing, and supply-chain backgrounds — so our AI is grounded in how these industries actually operate, audit, and comply.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 40px; padding: 44px 0 64px; border-top: 1px solid rgba(23,21,15,0.14);">
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 28px; margin: 0; color: #17150F;">Journey</h2>
+        <div style="display: grid; gap: 20px;">
+          <div style="display: grid; grid-template-columns: 90px 1fr; gap: 24px; align-items: baseline;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C2552E;">2023</span>
+            <span style="font-size: 16px; color: #17150F;">Founded to bring AI into operationally complex businesses.</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 90px 1fr; gap: 24px; align-items: baseline;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C2552E;">2024</span>
+            <span style="font-size: 16px; color: #17150F;">First AI agents deployed across accounting and manufacturing clients.</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 90px 1fr; gap: 24px; align-items: baseline;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C2552E;">2025</span>
+            <span style="font-size: 16px; color: #17150F;">Launched corporate AI training as a standalone practice.</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 90px 1fr; gap: 24px; align-items: baseline;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C2552E;">2026</span>
+            <span style="font-size: 16px; color: #17150F;">Scaling consulting, implementation, and enablement across four sectors.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <!-- ===== CONTACT ===== -->
+  <sc-if value="{{ isContact }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <section style="max-width: 1320px; margin: 0 auto; padding: 80px 40px 96px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px;">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #C2552E; text-transform: uppercase; margin-bottom: 26px;">Contact</div>
+        <h1 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 56px; line-height: 1.06; letter-spacing: -0.02em; margin: 0; color: #17150F;">Book an AI strategy session.</h1>
+        <p style="font-size: 18px; line-height: 1.6; color: #4A463C; max-width: 42ch; margin: 28px 0 36px;">Tell us where AI could move the needle in your operations. We'll come back with a clear, honest read on what's worth doing first.</p>
+        <div style="display: grid; gap: 16px; margin-bottom: 40px;">
+          <div style="display: flex; gap: 16px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">01</span><span style="font-size: 15.5px; color: #4A463C; line-height: 1.5;">We read your note and map it to where AI realistically helps.</span></div>
+          <div style="display: flex; gap: 16px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">02</span><span style="font-size: 15.5px; color: #4A463C; line-height: 1.5;">A 30-minute intro call — no pitch, just your operations.</span></div>
+          <div style="display: flex; gap: 16px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C2552E;">03</span><span style="font-size: 15.5px; color: #4A463C; line-height: 1.5;">A short, honest opportunity read: what's worth doing first.</span></div>
+        </div>
+        <div style="border-top: 1px solid rgba(23,21,15,0.14); padding-top: 28px;">
+          <div style="display: flex; justify-content: space-between; padding: 12px 0; font-size: 15px;"><span style="color:#8A8475;">General</span><a href="mailto:hello@aventeqai.com" style="color:#16324F; text-decoration:none;" style-hover="text-decoration:underline;"><span>hello</span><span>@aventeqai.com</span></a></div>
+          <div style="display: flex; justify-content: space-between; padding: 12px 0; font-size: 15px;"><span style="color:#8A8475;">Training</span><a href="mailto:training@aventeqai.com" style="color:#16324F; text-decoration:none;" style-hover="text-decoration:underline;"><span>training</span><span>@aventeqai.com</span></a></div>
+        </div>
+        <div style="border-top: 1px solid rgba(23,21,15,0.14); margin-top: 28px; padding-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #C2552E; text-transform: uppercase; margin-bottom: 12px;">India Office</div>
+            <p style="font-size: 14.5px; line-height: 1.6; color: #4A463C; margin: 0;">3rd Floor, Incuspaze, Building 1969<br>Alembic City<br>Vadodara, Gujarat – 390009<br>India</p>
+          </div>
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #C2552E; text-transform: uppercase; margin-bottom: 12px;">United Kingdom Office</div>
+            <p style="font-size: 14.5px; line-height: 1.6; color: #4A463C; margin: 0;">1 Fore Street, Moorgate<br>London – E14 3DQ<br>United Kingdom</p>
+          </div>
+        </div>
+      </div>
+      <div style="background: #FBFAF6; border: 1px solid rgba(23,21,15,0.12); border-radius: 14px; padding: 40px;">
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align: center; padding: 26px 10px 18px;">
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #2E7D5B; color: #F4F1E9; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 22px;">✓</div>
+            <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 30px; margin: 0 0 12px; color: #17150F;">Thanks — we'll be in touch.</h2>
+            <p style="font-size: 16px; line-height: 1.6; color: #4A463C; margin: 0 auto; max-width: 38ch;">Your note is in. Expect a reply within one business day to set up your strategy session.</p>
+            <button onClick="{{ resetForm }}" style="margin-top: 26px; font-family: 'Hanken Grotesk', sans-serif; font-size: 14.5px; font-weight: 600; color: #16324F; background: none; border: 1px solid rgba(22,50,79,0.3); cursor: pointer; padding: 12px 22px; border-radius: 8px;" style-hover="border-color:#16324F;">Send another →</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submitForm }}" style="display: grid; gap: 22px;">
+          <div>
+            <label for="aq-name" style="display: block; font-size: 13px; color: #8A8475; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.06em;">FULL NAME</label>
+            <input id="aq-name" value="{{ fName }}" onChange="{{ onName }}" placeholder="Jane Okafor" style="width: 100%; padding: 13px 14px; border: 1px solid rgba(23,21,15,0.18); border-radius: 8px; background: #F4F1E9; font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; color: #17150F; outline: none;" style-focus="border-color:#16324F;">
+            <sc-if value="{{ errorName }}" hint-placeholder-val="{{ false }}"><div style="font-size: 13px; color: #C2552E; margin-top: 7px;">{{ errorName }}</div></sc-if>
+          </div>
+          <div>
+            <label for="aq-email" style="display: block; font-size: 13px; color: #8A8475; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.06em;">WORK EMAIL</label>
+            <input id="aq-email" type="email" value="{{ fEmail }}" onChange="{{ onEmail }}" placeholder="jane@company.com" style="width: 100%; padding: 13px 14px; border: 1px solid rgba(23,21,15,0.18); border-radius: 8px; background: #F4F1E9; font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; color: #17150F; outline: none;" style-focus="border-color:#16324F;">
+            <sc-if value="{{ errorEmail }}" hint-placeholder-val="{{ false }}"><div style="font-size: 13px; color: #C2552E; margin-top: 7px;">{{ errorEmail }}</div></sc-if>
+          </div>
+          <div>
+            <label for="aq-industry" style="display: block; font-size: 13px; color: #8A8475; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.06em;">INDUSTRY</label>
+            <select id="aq-industry" value="{{ fIndustry }}" onChange="{{ onIndustry }}" style="width: 100%; padding: 13px 14px; border: 1px solid rgba(23,21,15,0.18); border-radius: 8px; background: #F4F1E9; font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; color: #17150F; outline: none;" style-focus="border-color:#16324F;">
+              <option>Accounting &amp; Tax</option>
+              <option>Law Firm</option>
+              <option>Manufacturing</option>
+              <option>Logistics</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="aq-msg" style="display: block; font-size: 13px; color: #8A8475; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.06em;">WHAT YOU'RE TRYING TO SOLVE</label>
+            <textarea id="aq-msg" value="{{ fMessage }}" onChange="{{ onMessage }}" placeholder="{{ messagePlaceholder }}" rows="3" style="width: 100%; padding: 13px 14px; border: 1px solid rgba(23,21,15,0.18); border-radius: 8px; background: #F4F1E9; font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; color: #17150F; outline: none; resize: vertical;" style-focus="border-color:#16324F;"></textarea>
+          </div>
+          <button type="submit" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: #F4F1E9; background: #16324F; border: none; cursor: pointer; padding: 15px; border-radius: 8px;" style-hover="background:#0F2438;">Book an AI Strategy Session →</button>
+        </form>
+        </sc-if>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <!-- ===== SHARED CTA ===== -->
+  <section style="background: #C2552E;">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 78px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap;">
+      <h2 style="font-family: 'Newsreader', serif; font-weight: 400; font-size: 42px; line-height: 1.1; letter-spacing: -0.015em; margin: 0; color: #FBF3EC; max-width: 20ch;">Find out where AI actually pays off in your operations.</h2>
+      <button onClick="{{ goContact }}" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 15.5px; font-weight: 600; color: #C2552E; background: #FBF3EC; border: none; cursor: pointer; padding: 16px 32px; border-radius: 8px; white-space: nowrap;" style-hover="background:#fff;">Book an AI Strategy Session →</button>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="background: #14130F; color: #F4F1E9;">
+    <div style="max-width: 1320px; margin: 0 auto; padding: 72px 40px 40px;">
+      <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 56px; border-bottom: 1px solid rgba(244,241,233,0.16);">
+        <div>
+          <div style="display: flex; align-items: baseline; gap: 9px;">
+            <span style="font-family: 'Newsreader', serif; font-size: 26px; color: #F4F1E9;">AventeQ AI</span>
+            <span style="width: 6px; height: 6px; border-radius: 50%; background: #C2552E; transform: translateY(-3px);"></span>
+          </div>
+          <p style="font-size: 14.5px; line-height: 1.6; color: rgba(244,241,233,0.55); max-width: 34ch; margin: 18px 0 0;">AI consulting, implementation, and training for operationally complex businesses.</p>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: rgba(244,241,233,0.45); text-transform: uppercase; margin-bottom: 18px;">Explore</div>
+          <div style="display: grid; gap: 12px;">
+            <button onClick="{{ goSolutions }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 0; font-family: 'Hanken Grotesk', sans-serif; font-size: 14.5px; color: rgba(244,241,233,0.78);" style-hover="color:#F4F1E9;">Solutions</button>
+            <button onClick="{{ goIndustries }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 0; font-family: 'Hanken Grotesk', sans-serif; font-size: 14.5px; color: rgba(244,241,233,0.78);" style-hover="color:#F4F1E9;">Industries</button>
+            <button onClick="{{ goTraining }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 0; font-family: 'Hanken Grotesk', sans-serif; font-size: 14.5px; color: rgba(244,241,233,0.78);" style-hover="color:#F4F1E9;">AI Training</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: rgba(244,241,233,0.45); text-transform: uppercase; margin-bottom: 18px;">Company</div>
+          <div style="display: grid; gap: 12px;">
+            <button onClick="{{ goCases }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 0; font-family: 'Hanken Grotesk', sans-serif; font-size: 14.5px; color: rgba(244,241,233,0.78);" style-hover="color:#F4F1E9;">Case Studies</button>
+            <button onClick="{{ goAbout }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 0; font-family: 'Hanken Grotesk', sans-serif; font-size: 14.5px; color: rgba(244,241,233,0.78);" style-hover="color:#F4F1E9;">About</button>
+            <button onClick="{{ goContact }}" style="text-align: left; background: none; border: none; cursor: pointer; padding: 0; font-family: 'Hanken Grotesk', sans-serif; font-size: 14.5px; color: rgba(244,241,233,0.78);" style-hover="color:#F4F1E9;">Contact</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: rgba(244,241,233,0.45); text-transform: uppercase; margin-bottom: 18px;">Connect</div>
+          <div style="display: grid; gap: 12px;">
+            
+            <a href="mailto:partnerships@aventeqai.com" style="font-size: 14.5px; color: rgba(244,241,233,0.78); text-decoration:none;" style-hover="color:#F4F1E9;"><span>partnerships</span><span>@aventeqai.com</span></a>
+          </div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 44px 0; border-bottom: 1px solid rgba(244,241,233,0.16);">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: rgba(244,241,233,0.45); text-transform: uppercase; margin-bottom: 14px;">India Office</div>
+          <p style="font-size: 14.5px; line-height: 1.65; color: rgba(244,241,233,0.78); margin: 0;">3rd Floor, Incuspaze, Building 1969<br>Alembic City<br>Vadodara, Gujarat – 390009<br>India</p>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: rgba(244,241,233,0.45); text-transform: uppercase; margin-bottom: 14px;">United Kingdom Office</div>
+          <p style="font-size: 14.5px; line-height: 1.65; color: rgba(244,241,233,0.78); margin: 0;">1 Fore Street, Moorgate<br>London – E14 3DQ<br>United Kingdom</p>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 28px; flex-wrap: wrap; gap: 12px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(244,241,233,0.4);">© 2026 AventeQ AI · All rights reserved</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: rgba(244,241,233,0.4);">Privacy · Terms · Security</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <sc-if value="{{ showTop }}" hint-placeholder-val="{{ false }}">
+  <button onClick="{{ goTop }}" aria-label="Back to top" style="position: fixed; bottom: 28px; right: 28px; z-index: 60; width: 48px; height: 48px; border-radius: 50%; background: #16324F; color: #F4F1E9; border: none; cursor: pointer; font-size: 18px; box-shadow: 0 10px 30px -8px rgba(20,19,15,0.5); display: flex; align-items: center; justify-content: center;" style-hover="background:#0F2438;">↑</button>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    page: 'home',
+    navOpen: false,
+    openFaq: null,
+    showTop: false,
+    fName: '', fEmail: '', fIndustry: 'Accounting & Tax', fMessage: '',
+    errorName: '', errorEmail: '',
+    submitted: false,
+  };
+
+  pages = ['home', 'solutions', 'industries', 'training', 'cases', 'about', 'contact'];
+
+  pageFromHash() {
+    if (typeof window === 'undefined') return 'home';
+    const h = (window.location.hash || '').replace('#', '');
+    return this.pages.indexOf(h) !== -1 ? h : 'home';
+  }
+
+  componentDidMount() {
+    this._onHash = () => {
+      this.setState({ page: this.pageFromHash(), navOpen: false });
+      if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'auto' });
+    };
+    this._onScroll = () => {
+      const show = (window.scrollY || 0) > 600;
+      if (show !== this.state.showTop) this.setState({ showTop: show });
+    };
+    this._onKey = (e) => { if (e.key === 'Escape' && this.state.navOpen) this.setState({ navOpen: false }); };
+    window.addEventListener('hashchange', this._onHash);
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('keydown', this._onKey);
+    this._supportsVT = typeof CSS !== 'undefined' && CSS.supports && CSS.supports('animation-timeline: view()');
+    try {
+      const d = JSON.parse(localStorage.getItem('aq_form_draft') || 'null');
+      if (d) this.setState({ fName: d.fName || '', fEmail: d.fEmail || '', fIndustry: d.fIndustry || 'Accounting & Tax', fMessage: d.fMessage || '' });
+    } catch (e) {}
+    const startPage = this.pageFromHash();
+    if (startPage !== this.state.page) this.setState({ page: startPage });
+    this.setupReveal();
+  }
+
+  componentWillUnmount() {
+    if (typeof window === 'undefined') return;
+    window.removeEventListener('hashchange', this._onHash);
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('keydown', this._onKey);
+    if (this._io) this._io.disconnect();
+    document.body.style.overflow = '';
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const prev = prevState || {};
+    if (prev.page !== this.state.page) this.setupReveal();
+    if (prev.navOpen !== this.state.navOpen && typeof document !== 'undefined') {
+      document.body.style.overflow = this.state.navOpen ? 'hidden' : '';
+    }
+  }
+
+  setupReveal() {
+    if (this._supportsVT || typeof window === 'undefined') return;
+    if (this._io) this._io.disconnect();
+    requestAnimationFrame(() => {
+      const secs = document.querySelectorAll('main > section');
+      this._io = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.style.opacity = '1';
+            en.target.style.transform = 'none';
+            this._io.unobserve(en.target);
+          }
+        });
+      }, { threshold: 0.08 });
+      secs.forEach((s) => {
+        s.style.opacity = '0';
+        s.style.transform = 'translateY(26px)';
+        s.style.transition = 'opacity .7s ease, transform .7s ease';
+        this._io.observe(s);
+      });
+    });
+  }
+
+  go(page) {
+    if (typeof window !== 'undefined') {
+      window.location.hash = page === 'home' ? '' : page;
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+    this.setState({ page, navOpen: false });
+  }
+
+  toggleFaq(i) {
+    this.setState(s => ({ openFaq: s.openFaq === i ? null : i }));
+  }
+
+  saveDraft(next) {
+    try {
+      localStorage.setItem('aq_form_draft', JSON.stringify({
+        fName: this.state.fName, fEmail: this.state.fEmail,
+        fIndustry: this.state.fIndustry, fMessage: this.state.fMessage, ...next,
+      }));
+    } catch (e) {}
+  }
+
+  submitForm(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const errorName = this.state.fName.trim() ? '' : 'Please enter your name';
+    let errorEmail = '';
+    if (!this.state.fEmail.trim()) errorEmail = 'Please enter your email';
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.state.fEmail.trim())) errorEmail = 'Enter a valid email address';
+    if (errorName || errorEmail) { this.setState({ errorName, errorEmail }); return; }
+    try {
+      const subs = JSON.parse(localStorage.getItem('aq_submissions') || '[]');
+      subs.push({ name: this.state.fName, email: this.state.fEmail, industry: this.state.fIndustry, message: this.state.fMessage, at: new Date().toISOString() });
+      localStorage.setItem('aq_submissions', JSON.stringify(subs));
+      localStorage.removeItem('aq_form_draft');
+    } catch (e) {}
+    this.setState({ submitted: true, errorName: '', errorEmail: '' });
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  resetForm() {
+    this.setState({ submitted: false, fName: '', fEmail: '', fMessage: '', errorName: '', errorEmail: '' });
+  }
+
+  renderVals() {
+    const p = this.state.page;
+    const navColor = (name) => p === name ? '#17150F' : '#6B6658';
+    const navUL = (name) => p === name ? '#C2552E' : 'transparent';
+    const placeholders = {
+      'Accounting & Tax': 'e.g. month-end reconciliation, notice handling, client follow-ups…',
+      'Law Firm': 'e.g. contract review, legal research, matter & deadline management…',
+      'Manufacturing': 'e.g. vendor delays, procurement coordination, production visibility…',
+      'Logistics': 'e.g. shipment exceptions, delay prediction, escalation chasing…',
+      'Other': 'Which operations or workflows are you hoping AI could help with?',
+    };
+    const faqData = [
+      { q: 'Is our data safe with you?', a: 'Yes. We never train shared or public models on your documents, support private and on-prem deployment behind your own firewall, and keep a full role-based access and audit trail. We work inside regulated, audited industries where trust is the precondition, not a feature.' },
+      { q: 'How long until we see something real?', a: 'Weeks, not quarters. A typical pilot proves one high-value use case end to end in 2–4 weeks, with production systems following over the next 4–8. You see measurable results before committing to scale.' },
+      { q: 'Do we need clean, organized data first?', a: 'No. Part of our readiness assessment and workflow mapping is meeting your data where it is — messy, fragmented, across systems. We design around real operational conditions rather than an idealized data warehouse.' },
+      { q: 'What if our team resists using AI?', a: 'That is the most common failure point, and why training is one of our three pillars. We run role-tailored enablement that takes teams from skeptical to fluent, so the systems we build actually get used every day.' },
+      { q: 'How do engagements and pricing work?', a: 'We start small with a fixed-scope pilot, then move to build-and-deploy, then ongoing scale-and-enablement. Each phase is scoped and priced up front against expected ROI — no open-ended retainers to start.' },
+    ];
+    const faqs = faqData.map((it, i) => ({
+      q: it.q,
+      a: it.a,
+      open: this.state.openFaq === i,
+      sign: this.state.openFaq === i ? '−' : '+',
+      toggle: () => this.toggleFaq(i),
+    }));
+    return {
+      isHome: p === 'home',
+      isSolutions: p === 'solutions',
+      isIndustries: p === 'industries',
+      isTraining: p === 'training',
+      isCases: p === 'cases',
+      isAbout: p === 'about',
+      isContact: p === 'contact',
+      navSolutionsColor: navColor('solutions'),
+      navIndustriesColor: navColor('industries'),
+      navTrainingColor: navColor('training'),
+      navCasesColor: navColor('cases'),
+      navAboutColor: navColor('about'),
+      navSolutionsUL: navUL('solutions'),
+      navIndustriesUL: navUL('industries'),
+      navTrainingUL: navUL('training'),
+      navCasesUL: navUL('cases'),
+      navAboutUL: navUL('about'),
+      navOpen: this.state.navOpen,
+      showTop: this.state.showTop,
+      faqs,
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      fName: this.state.fName,
+      fEmail: this.state.fEmail,
+      fIndustry: this.state.fIndustry,
+      fMessage: this.state.fMessage,
+      errorName: this.state.errorName,
+      errorEmail: this.state.errorEmail,
+      messagePlaceholder: placeholders[this.state.fIndustry] || placeholders['Other'],
+      onName: (e) => { const v = e.target.value; this.setState({ fName: v, errorName: '' }); this.saveDraft({ fName: v }); },
+      onEmail: (e) => { const v = e.target.value; this.setState({ fEmail: v, errorEmail: '' }); this.saveDraft({ fEmail: v }); },
+      onIndustry: (e) => { const v = e.target.value; this.setState({ fIndustry: v }); this.saveDraft({ fIndustry: v }); },
+      onMessage: (e) => { const v = e.target.value; this.setState({ fMessage: v }); this.saveDraft({ fMessage: v }); },
+      submitForm: (e) => this.submitForm(e),
+      resetForm: () => this.resetForm(),
+      goTop: () => { if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' }); },
+      toggleNav: () => this.setState(s => ({ navOpen: !s.navOpen })),
+      goHome: () => this.go('home'),
+      goSolutions: () => this.go('solutions'),
+      goIndustries: () => this.go('industries'),
+      goTraining: () => this.go('training'),
+      goCases: () => this.go('cases'),
+      goAbout: () => this.go('about'),
+      goContact: () => this.go('contact'),
+    };
+  }
+}
+</script>
+</body>
+</html>
