@@ -66,7 +66,7 @@ Config in `lib/exitIntent.js`:
 - `EXIT_INTENT_SKIP_PATHS` — routes where it should never trigger.
 
 ### Consent & compliance
-Every lead-capture form (`LeadGate`, `ContactForm`, `ExitIntentModal`, `EmailReportCapture`) shows an optional, unchecked-by-default consent checkbox linking to [`/privacy`](app/privacy/page.jsx) (`components/ConsentCheckbox.jsx`). Checking it is **not required to submit** — a lead is still captured either way — but the boolean is forwarded end-to-end (`submitLead` → `/api/lead` → `lib/ghl.js`) as a `consent:yes` / `consent:no` tag. **You must add an If/Else branch in the GHL Workflow keyed on that tag so the speed-to-lead email only fires for `consent:yes`** — the code can't stop GHL from sending an email once the webhook fires, so this tag is the enforcement point. The consent state is persisted with the lead (it's one of the discrete fields forwarded), not just used client-side.
+Every lead-capture form (`LeadGate`, `ContactForm`, `ExitIntentModal`, `EmailReportCapture`) shows an unchecked-by-default consent checkbox linking to [`/privacy`](app/privacy/page.jsx) (`components/ConsentCheckbox.jsx`). **It's required** — each form validates it alongside its other required fields and blocks submission with an inline error until it's checked, the same way a missing email is handled. The boolean is still forwarded end-to-end (`submitLead` → `/api/lead` → `lib/ghl.js`) as a `consent:yes` / `consent:no` tag on every lead — now always `consent:yes` in practice, but it's kept as an explicit, timestamped record on the CRM contact rather than assumed. Because consent can no longer be `no` from this site, **the GHL Workflow doesn't need a consent If/Else branch** — that gate moved to the website itself.
 
 ### Bot protection
 Every lead-capture form includes an invisible honeypot field (`components/HoneypotField.jsx` — off-screen, no tab stop, `autoComplete="off"`). A real visitor never fills it; a script that blindly fills every input does. `/api/lead` checks it server-side first: if filled, the request is silently accepted (`{ ok: true }`, so the bot gets no signal it was caught) but **never logged as a real lead or forwarded to GHL**.
@@ -120,9 +120,9 @@ Unset in development by default — leads still log to the console; the GHL forw
    - `industry:<slug>` — when known (`accounting`/`manufacturing`/`logistics`/`law`).
    - `context:<key>` — which CTA the lead came through (`strategy-session`/`readiness-workshop`/`prep-playbook`), when set.
    - `team-size:<bucket>` — `1-20`/`21-100`/`101-500`/`500-plus`, when collected.
-   - `consent:<yes|no>` — always present. **Branch on this before sending any email.**
+   - `consent:<yes|no>` — always present, and always `yes` in practice since the website requires the checkbox before submitting. Kept as an explicit record on the contact, no workflow branch needed for it.
    - `retake` — present only when this email already had a known capture on the same device (see "Duplicate & retake handling" below). **Branch on this to skip the welcome email.**
-5. Add the speed-to-lead step: an **Email** (or SMS) action sent to `{{contact.email}}`, gated behind an **If/Else** on `consent:yes` (skip entirely otherwise) and `retake` (skip if present), and ideally branched further on `tier:*`/`context:*` so "Ready to build" leads (or someone who clicked the workshop CTA) get a different message than a cold "Ready to explore" lead.
+5. Add the speed-to-lead step: an **Email** (or SMS) action sent to `{{contact.email}}`, gated behind an **If/Else** on `retake` (skip if present), and ideally branched further on `tier:*`/`context:*` so "Ready to build" leads (or someone who clicked the workshop CTA) get a different message than a cold "Ready to explore" lead.
 6. Add the internal notification step: an **Internal Notification** action (email/SMS to your sales inbox) so a human sees every new lead immediately — this one can fire regardless of consent, since it's not contacting the lead.
 7. Turn the Workflow **Published**.
 

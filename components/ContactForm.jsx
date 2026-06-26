@@ -32,6 +32,7 @@ export default function ContactForm({ context = "" }) {
   const [fMessage, setFMessage] = useState("");
   const [errorName, setErrorName] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
+  const [errorConsent, setErrorConsent] = useState("");
   const [consent, setConsent] = useState(false);
   const [hp, setHp] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -65,9 +66,11 @@ export default function ContactForm({ context = "" }) {
     let eEmail = "";
     if (!fEmail.trim()) eEmail = "Please enter your email";
     else if (!isValidEmail(fEmail)) eEmail = "Enter a valid email address";
-    if (eName || eEmail) {
+    const eConsent = consent ? "" : "Please agree to continue";
+    if (eName || eEmail || eConsent) {
       setErrorName(eName);
       setErrorEmail(eEmail);
+      setErrorConsent(eConsent);
       return;
     }
     try {
@@ -93,6 +96,7 @@ export default function ContactForm({ context = "" }) {
     setSubmitted(true);
     setErrorName("");
     setErrorEmail("");
+    setErrorConsent("");
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -103,6 +107,8 @@ export default function ContactForm({ context = "" }) {
     setFMessage("");
     setErrorName("");
     setErrorEmail("");
+    setErrorConsent("");
+    setConsent(false);
   };
 
   return (
@@ -216,7 +222,15 @@ export default function ContactForm({ context = "" }) {
           </div>
 
           <HoneypotField value={hp} onChange={setHp} />
-          <ConsentCheckbox checked={consent} onChange={setConsent} id="aq-consent" />
+          <ConsentCheckbox
+            checked={consent}
+            onChange={(v) => {
+              setConsent(v);
+              setErrorConsent("");
+            }}
+            id="aq-consent"
+            error={errorConsent}
+          />
 
           <button
             type="submit"

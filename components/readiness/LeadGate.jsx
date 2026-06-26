@@ -26,6 +26,7 @@ export default function LeadGate({ onSubmit, onBack }) {
     else if (!isValidEmail(email)) next.email = "Enter a valid email address";
     if (!industry) next.industry = "Please select your industry";
     if (!teamSize) next.teamSize = "Please select your team size";
+    if (!consent) next.consent = "Please agree to continue";
     if (Object.keys(next).length) {
       setErrors(next);
       return;
@@ -161,7 +162,15 @@ export default function LeadGate({ onSubmit, onBack }) {
         </div>
 
         <HoneypotField value={hp} onChange={setHp} />
-        <ConsentCheckbox checked={consent} onChange={setConsent} id="rg-consent" />
+        <ConsentCheckbox
+          checked={consent}
+          onChange={(v) => {
+            setConsent(v);
+            setErrors((x) => ({ ...x, consent: "" }));
+          }}
+          id="rg-consent"
+          error={errors.consent}
+        />
 
         <button
           type="submit"

@@ -12,16 +12,21 @@ export default function EmailReportCapture({ onCapture }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState("");
   const [hp, setHp] = useState("");
   const [sent, setSent] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (!isValidEmail(email)) {
-      setError("Enter a valid email address");
+    const eEmail = isValidEmail(email) ? "" : "Enter a valid email address";
+    const eConsent = consent ? "" : "Please agree to continue";
+    if (eEmail || eConsent) {
+      setError(eEmail);
+      setConsentError(eConsent);
       return;
     }
     setError("");
+    setConsentError("");
     setSent(true);
     onCapture({ email: email.trim(), consent, hp });
   };
@@ -86,7 +91,15 @@ export default function EmailReportCapture({ onCapture }) {
           {error && <div style={errorStyle}>{error}</div>}
         </div>
         <HoneypotField value={hp} onChange={setHp} />
-        <ConsentCheckbox checked={consent} onChange={setConsent} id="erc-consent" />
+        <ConsentCheckbox
+          checked={consent}
+          onChange={(v) => {
+            setConsent(v);
+            setConsentError("");
+          }}
+          id="erc-consent"
+          error={consentError}
+        />
         <button
           type="submit"
           className="btn-navy"
