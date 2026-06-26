@@ -5,11 +5,20 @@ import ProgressBar from "./ProgressBar";
 import QuestionStep from "./QuestionStep";
 import LeadGate from "./LeadGate";
 import ResultScreen from "./ResultScreen";
-import { QUESTIONS, normalize, tierFor } from "@/lib/readiness";
+import { QUESTIONS, normalize, tierFor, GATE_BEFORE_RESULT, encodeResult, decodeResult } from "@/lib/readiness";
 import { submitLead, flushQueue } from "@/lib/leadSubmit";
 import { track, EVENTS } from "@/lib/analytics";
 
 const TOTAL = QUESTIONS.length;
+
+function pushResultToUrl(result, industry) {
+  try {
+    const token = encodeResult({ ...result, industry });
+    if (!token) return;
+    const url = `${window.location.pathname}?r=${token}`;
+    window.history.replaceState(null, "", url);
+  } catch {}
+}
 
 export default function ReadinessAssessment() {
   // step: 0..TOTAL-1 (questions) | "gate" | "result"
@@ -18,10 +27,36 @@ export default function ReadinessAssessment() {
   const [result, setResult] = useState(null);
   const [profile, setProfile] = useState(null);
 
+  // Restore a shared/refreshed result from the URL (?r=<token>) instead of
+  // starting the quiz over. No PII in the token, so this is safe to forward.
   useEffect(() => {
+    try {
+      const token = new URLSearchParams(window.location.search).get("r");
+      const decoded = token ? decodeResult(token) : null;
+      if (decoded) {
+        setResult({ score: decoded.score, tier: decoded.tier, breakdown: decoded.breakdown });
+        setProfile(decoded.industry ? { industry: decoded.industry } : null);
+        setStep("result");
+        return;
+      }
+    } catch {}
     track(EVENTS.ASSESSMENT_STARTED);
     flushQueue(); // retry any leads stranded by an earlier failed POST
   }, []);
+
+  const finishAnonymously = () => {
+    const raw = QUESTIONS.reduce((sum, q) => sum + (answers[q.key] || 0), 0);
+    const score = normalize(raw);
+    const tier = tierFor(score);
+    const breakdown = QUESTIONS.map((q) => ({ dimension: q.dimension, score: answers[q.key] || 0 }));
+    const result = { score, tier, breakdown };
+
+    setResult(result);
+    setProfile(null);
+    setStep("result");
+    track(EVENTS.ASSESSMENT_COMPLETED, { score, tier: tier.key });
+    pushResultToUrl(result, null);
+  };
 
   const selectAnswer = (score) => {
     const q = QUESTIONS[step];
@@ -29,9 +64,11 @@ export default function ReadinessAssessment() {
     track(EVENTS.ASSESSMENT_QUESTION_ANSWERED, { step, dimension: q.dimension, score });
     if (step < TOTAL - 1) {
       setStep(step + 1);
-    } else {
+    } else if (GATE_BEFORE_RESULT) {
       setStep("gate");
       track(EVENTS.ASSESSMENT_GATE_VIEWED);
+    } else {
+      finishAnonymously();
     }
   };
 
@@ -45,10 +82,12 @@ export default function ReadinessAssessment() {
     const score = normalize(raw);
     const tier = tierFor(score);
     const breakdown = QUESTIONS.map((q) => ({ dimension: q.dimension, score: answers[q.key] || 0 }));
+    const result = { score, tier, breakdown };
 
     setProfile(profileData);
-    setResult({ score, tier, breakdown });
+    setResult(result);
     setStep("result");
+    pushResultToUrl(result, profileData.industry);
 
     track(EVENTS.LEAD_CAPTURED, {
       industry: profileData.industry,
@@ -70,11 +109,35 @@ export default function ReadinessAssessment() {
     });
   };
 
+  // Used when GATE_BEFORE_RESULT is false: the result is already visible and
+  // anonymous; this fires when the visitor uses the inline "email me this
+  // report" offer on the result screen, capturing the lead at that point.
+  const handleInlineCapture = (profileData) => {
+    setProfile((prev) => ({ ...prev, ...profileData }));
+    track(EVENTS.LEAD_CAPTURED, {
+      industry: profileData.industry || null,
+      tier: result.tier.key,
+      score: result.score,
+    });
+    submitLead({
+      source: "readiness",
+      ...profileData,
+      score: result.score,
+      tier: result.tier.key,
+      tierLabel: result.tier.label,
+      answers: QUESTIONS.reduce((acc, q) => ({ ...acc, [q.key]: answers[q.key] ?? null }), {}),
+      completedAt: new Date().toISOString(),
+    });
+  };
+
   const restart = () => {
     setAnswers({});
     setResult(null);
     setProfile(null);
     setStep(0);
+    try {
+      window.history.replaceState(null, "", window.location.pathname);
+    } catch {}
     track(EVENTS.ASSESSMENT_STARTED);
   };
 
@@ -115,7 +178,13 @@ export default function ReadinessAssessment() {
         {step === "gate" && <LeadGate onSubmit={handleGateSubmit} onBack={goBack} />}
 
         {step === "result" && result && (
-          <ResultScreen result={result} profile={profile} onRestart={restart} />
+          <ResultScreen
+            result={result}
+            profile={profile}
+            onRestart={restart}
+            gateBeforeResult={GATE_BEFORE_RESULT}
+            onCapture={handleInlineCapture}
+          />
         )}
       </div>
     </section>

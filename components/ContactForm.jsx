@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { fieldStyle, labelStyle, isValidEmail } from "@/lib/forms";
 import { submitLead, flushQueue } from "@/lib/leadSubmit";
-import { getKnownProfile, saveKnownProfile } from "@/lib/leadProfile";
+import { getKnownProfile, recordCapture } from "@/lib/leadProfile";
+import ConsentCheckbox from "@/components/ConsentCheckbox";
+import HoneypotField from "@/components/HoneypotField";
 
 const PLACEHOLDERS = {
   "Accounting & Tax": "e.g. month-end reconciliation, notice handling, client follow-ups…",
@@ -30,6 +32,8 @@ export default function ContactForm({ context = "" }) {
   const [fMessage, setFMessage] = useState("");
   const [errorName, setErrorName] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [hp, setHp] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   // Restore draft on mount; fall back to fields known from earlier forms
@@ -72,7 +76,7 @@ export default function ContactForm({ context = "" }) {
       localStorage.setItem("aq_submissions", JSON.stringify(subs));
       localStorage.removeItem("aq_form_draft");
     } catch {}
-    saveKnownProfile({ firstName: fName.trim(), email: fEmail.trim(), industry: fIndustry });
+    const { isRetake, firstCapturedAt } = recordCapture({ firstName: fName.trim(), email: fEmail.trim(), industry: fIndustry });
     // Fire-and-forget: the success state renders immediately either way.
     submitLead({
       source: "contact",
@@ -81,6 +85,10 @@ export default function ContactForm({ context = "" }) {
       industry: fIndustry,
       message: fMessage,
       context: context || null,
+      consent,
+      hp,
+      isRetake,
+      firstCapturedAt,
     });
     setSubmitted(true);
     setErrorName("");
@@ -206,6 +214,9 @@ export default function ContactForm({ context = "" }) {
               style={{ ...fieldStyle, resize: "vertical" }}
             />
           </div>
+
+          <HoneypotField value={hp} onChange={setHp} />
+          <ConsentCheckbox checked={consent} onChange={setConsent} id="aq-consent" />
 
           <button
             type="submit"

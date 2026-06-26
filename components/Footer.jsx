@@ -139,7 +139,7 @@ export default function Footer() {
             © 2026 AventeQ AI · All rights reserved
           </span>
           <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "rgba(244,241,233,0.4)" }}>
-            Privacy · Terms · Security
+            <Link href="/privacy" className="footer-link" style={{ color: "inherit", textDecoration: "none" }}>Privacy</Link> · Terms · Security
           </span>
         </div>
       </div>

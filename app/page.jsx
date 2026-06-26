@@ -22,6 +22,12 @@ const sectionH2 = {
 
 const monoLineDark = { fontFamily: "var(--font-mono)", fontSize: 12, color: "rgba(244,241,233,0.5)" };
 
+const AI_PARTNERS = [
+  { name: "OpenAI", src: "/logos/openai.png" },
+  { name: "Anthropic", src: "/logos/anthropic.png" },
+  { name: "Google Gemini", src: "/logos/gemini.png" },
+];
+
 const INDUSTRY_ROWS = [
   { id: "A1", slug: "accounting", title: "Accounting & Tax", desc: "Reconciliation, tax optimization, notice handling, and client communication — automated." },
   { id: "M2", slug: "manufacturing", title: "Manufacturing", desc: "Production intelligence, procurement agents, vendor coordination, and predictive alerts." },
@@ -109,9 +115,9 @@ export default function Home() {
         <div style={{ height: 1, background: "rgba(23,21,15,0.12)", margin: "64px 0 0" }} />
         <div className="g-3" style={{ gap: 1, background: "rgba(23,21,15,0.12)" }}>
           {[
-            ["4 sectors", "accounting, law, manufacturing, and logistics — where we go deep, not wide.", "30px 28px 4px 0"],
+            ["4 sectors", "accounting, law, manufacturing, and logistics — where we go deep, not wide.", "30px 28px 4px"],
             ["6 steps", "a proven method from readiness assessment to continuous optimization.", "30px 28px 4px"],
-            ["Weeks", "to your first AI system running in production — not quarters.", "30px 0 4px 28px"],
+            ["Weeks", "to your first AI system running in production — not quarters.", "30px 28px 4px"],
           ].map(([num, desc, padding]) => (
             <div key={num} style={{ background: "var(--cream)", padding }}>
               <div style={{ fontFamily: "var(--font-serif)", fontSize: 46, fontWeight: 400, color: "var(--navy)", letterSpacing: "-0.01em" }}>{num}</div>
@@ -130,6 +136,43 @@ export default function Home() {
           <div style={{ display: "flex", gap: 40, flexWrap: "wrap", alignItems: "center", opacity: 0.82 }}>
             {["Mid-size CA firms", "Component manufacturers", "Freight & 3PL operators", "Boutique law firms"].map((s) => (
               <span key={s} style={{ fontFamily: "var(--font-serif)", fontSize: 20, color: "var(--ink)" }}>{s}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* AI Partners */}
+      <section style={{ background: "var(--near-black)" }}>
+        <div className="container" style={{ paddingTop: 84, paddingBottom: 84 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", marginBottom: 48, flexWrap: "wrap", gap: 20 }}>
+            <div>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 11.5, letterSpacing: "0.16em", color: "var(--terra-light)", textTransform: "uppercase", marginBottom: 16 }}>
+                AI Partners
+              </div>
+              <h2 className="t-44" style={{ ...sectionH2, color: "var(--cream)", maxWidth: "22ch" }}>Partnered with the labs building frontier AI.</h2>
+            </div>
+            <p style={{ fontSize: 15, lineHeight: 1.6, color: "rgba(244,241,233,0.6)", margin: 0, maxWidth: "34ch" }}>
+              We implement and train enterprise teams on the platforms actually shipping frontier models — not a layer removed from them.
+            </p>
+          </div>
+          <div className="g-3" style={{ gap: 24 }}>
+            {AI_PARTNERS.map((p) => (
+              <div
+                key={p.name}
+                style={{
+                  height: 150,
+                  overflow: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <img
+                  src={p.src}
+                  alt={p.name}
+                  style={{ height: "180%", width: "auto", maxWidth: "none", objectFit: "contain" }}
+                />
+              </div>
             ))}
           </div>
         </div>

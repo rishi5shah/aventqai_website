@@ -22,6 +22,7 @@ Built with **Next.js (App Router)** as real, statically-rendered routes — recr
 | `/cases` | Case studies |
 | `/about` | Mission, team, advisors, journey |
 | `/contact` | Lead-capture form + offices |
+| `/privacy` | Privacy policy (what's collected, why, GDPR/DPDP rights) |
 
 ## Features
 
@@ -55,9 +56,33 @@ A lead-capture funnel layered on top of the marketing site. Built in tasks; this
 ### Secondary CTAs + exit-intent capture
 Every surface that previously showed only "Book an AI Strategy Session" now also offers a path into the readiness assessment: the homepage hero (small link under the buttons), the global closing CTA band (`components/CTA.jsx`, every page), and the industry pages (`IndustryCtaLinks`, from Task 2).
 
-A dismissible exit-intent popup (`components/ExitIntentModal.jsx`) captures an email when the cursor leaves the top of the viewport, at most once per browser session (`sessionStorage`), and never on `/contact` or `/readiness` (they already run their own capture flow). Config in `lib/exitIntent.js`:
+A dismissible exit-intent popup (`components/ExitIntentModal.jsx`) captures an email, and never appears on `/contact` or `/readiness` (they already run their own capture flow). Trigger logic:
+- **Desktop:** cursor leaves the top of the viewport (after a 4s arm delay so it can't fire instantly).
+- **Touch devices** (`pointer: coarse`): no mouseleave gesture exists, so it falls back to a 30s timer instead.
+- **Frequency:** shown at most once per browser *session* (`sessionStorage`). If the visitor explicitly dismisses it (✕, Escape, or clicking the backdrop) or converts, a separate `localStorage` flag suppresses it **permanently** on that device — it won't reappear in a future session either.
+
+Config in `lib/exitIntent.js`:
 - `EXIT_INTENT_ENABLED` — flip to `false` to kill it sitewide.
 - `EXIT_INTENT_SKIP_PATHS` — routes where it should never trigger.
+
+### Consent & compliance
+Every lead-capture form (`LeadGate`, `ContactForm`, `ExitIntentModal`, `EmailReportCapture`) shows an optional, unchecked-by-default consent checkbox linking to [`/privacy`](app/privacy/page.jsx) (`components/ConsentCheckbox.jsx`). Checking it is **not required to submit** — a lead is still captured either way — but the boolean is forwarded end-to-end (`submitLead` → `/api/lead` → `lib/ghl.js`) as a `consent:yes` / `consent:no` tag. **You must add an If/Else branch in the GHL Workflow keyed on that tag so the speed-to-lead email only fires for `consent:yes`** — the code can't stop GHL from sending an email once the webhook fires, so this tag is the enforcement point. The consent state is persisted with the lead (it's one of the discrete fields forwarded), not just used client-side.
+
+### Bot protection
+Every lead-capture form includes an invisible honeypot field (`components/HoneypotField.jsx` — off-screen, no tab stop, `autoComplete="off"`). A real visitor never fills it; a script that blindly fills every input does. `/api/lead` checks it server-side first: if filled, the request is silently accepted (`{ ok: true }`, so the bot gets no signal it was caught) but **never logged as a real lead or forwarded to GHL**.
+
+### Duplicate & retake handling
+`lib/leadProfile.js`'s `recordCapture()` checks, before saving, whether the submitted email already matches the cached profile on that device. If so, the lead is forwarded with `isRetake: true` and the *original* `firstCapturedAt` timestamp (never overwritten by later submissions) instead of treating it as a new capture. Both are forwarded to GHL: `firstCapturedAt` as a field, and a `retake` tag when true. **Add a branch in the GHL Workflow that skips the welcome-email step when the `retake` tag is present**, so retaking the assessment updates the score/tier on the existing contact without re-sending the first-touch email. (GHL's own "Create/Update Contact" action already dedupes by email at the CRM level regardless — this just gives your workflow the signal to also skip the *email*.)
+
+### Result persistence & sharing
+A completed assessment result is encoded into the URL itself (`?r=<token>` via `lib/readiness.js` `encodeResult`/`decodeResult`) — score, tier, per-dimension breakdown, and industry only, **deliberately no name/email/company**, so the link is safe to forward to a colleague. No database or server-side token. Refreshing `/readiness` mid-result restores it from the URL instead of restarting the quiz; the "↗ Copy share link" button on the result screen copies the current URL. Opening a shared link shows the same result anonymously — no email required to view it.
+
+### Gate placement (`gateBeforeResult`)
+`lib/readiness.js` exports `GATE_BEFORE_RESULT` (default `true`):
+- **`true`** (current default) — the lead gate (name/email/company/industry/team size) appears before the result, as described above.
+- **`false`** — the questions go straight to the result screen, anonymously, with the full score/tier/breakdown visible immediately. The tier CTA falls back to the general `/industries` page (industry is unknown). In place of the gate, the result screen shows an inline **"Want this emailed to you?"** email-only capture (`components/readiness/EmailReportCapture.jsx`) — submitting it is what actually captures the lead at that point, sourced as `readiness` same as the gated flow.
+
+Flip the one constant to A/B test gate-first (more lead volume) against result-first (less friction for skeptical, senior buyers who'd bounce at a gate) — no other code changes needed.
 
 ### Progressive profiling
 `lib/leadProfile.js` caches known fields (`firstName`, `email`, `company`, `industry`, `teamSize`) in `localStorage` once any form captures them. Later forms — the contact form, the readiness lead gate — pre-fill those fields instead of re-asking, but an in-progress draft always wins over the cached profile. Purely local (no server-side identity resolution); if real identity is added later (login, a CRM-read API), this is the extension point to replace.
@@ -95,13 +120,19 @@ Unset in development by default — leads still log to the console; the GHL forw
    - `industry:<slug>` — when known (`accounting`/`manufacturing`/`logistics`/`law`).
    - `context:<key>` — which CTA the lead came through (`strategy-session`/`readiness-workshop`/`prep-playbook`), when set.
    - `team-size:<bucket>` — `1-20`/`21-100`/`101-500`/`500-plus`, when collected.
-5. Add the speed-to-lead step: an **Email** (or SMS) action sent to `{{contact.email}}`, ideally inside an **If/Else** branch keyed off the `tier:*` or `context:*` tags so "Ready to build" leads (or someone who clicked the workshop CTA) get a different message than a cold "Ready to explore" lead.
-6. Add the internal notification step: an **Internal Notification** action (email/SMS to your sales inbox) so a human sees every new lead immediately.
+   - `consent:<yes|no>` — always present. **Branch on this before sending any email.**
+   - `retake` — present only when this email already had a known capture on the same device (see "Duplicate & retake handling" below). **Branch on this to skip the welcome email.**
+5. Add the speed-to-lead step: an **Email** (or SMS) action sent to `{{contact.email}}`, gated behind an **If/Else** on `consent:yes` (skip entirely otherwise) and `retake` (skip if present), and ideally branched further on `tier:*`/`context:*` so "Ready to build" leads (or someone who clicked the workshop CTA) get a different message than a cold "Ready to explore" lead.
+6. Add the internal notification step: an **Internal Notification** action (email/SMS to your sales inbox) so a human sees every new lead immediately — this one can fire regardless of consent, since it's not contacting the lead.
 7. Turn the Workflow **Published**.
 
-Because every lead already carries `source` (`readiness` / `contact` / `exit-intent`) and, where available, `tier`/`score`/`industry`, the whole speed-to-lead + routing logic can branch on those without any code changes — edit the Workflow, not `lib/ghl.js`.
+Because every lead already carries `source` (`readiness` / `contact` / `exit-intent`) and, where available, `tier`/`score`/`industry`/`consent`/`retake`, the whole speed-to-lead + routing logic can branch on those without any code changes — edit the Workflow, not `lib/ghl.js`.
+
+**Architecture note on the immediate email:** the speed-to-lead email is sent *by the GHL Workflow*, not by code in this repo. This repo never calls an email API directly — doing so would mean adding a new third-party email vendor, which the brief's scope-discipline constraint rules out given none exists in the repo today and you've chosen the no-API-key Inbound Webhook integration. The Workflow you configure above **is** the "immediate email" the brief calls for; everything past that (drip sequences, re-engagement) should live in GHL too, never in code.
 
 ## Before production
 
 - Replace placeholder trust-bar segments, case-study stats, and compliance badges with real, permissioned content + logos
-- Set `GHL_WEBHOOK_URL` in production env and publish the corresponding GHL Workflow (see above)
+- Set `GHL_WEBHOOK_URL` in production env and publish the corresponding GHL Workflow, with the `consent`/`retake` branches described above wired in
+- Have a lawyer review [`/privacy`](app/privacy/page.jsx) — it's a functional placeholder covering what's collected and why, not legal sign-off
+- Decide `GATE_BEFORE_RESULT` (`lib/readiness.js`) — ship gated, ungated, or A/B test both

@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { fieldStyle, labelStyle, errorStyle, isValidEmail } from "@/lib/forms";
 import { INDUSTRIES, TEAM_SIZES } from "@/lib/readiness";
-import { getKnownProfile, saveKnownProfile } from "@/lib/leadProfile";
+import { getKnownProfile, recordCapture } from "@/lib/leadProfile";
+import ConsentCheckbox from "@/components/ConsentCheckbox";
+import HoneypotField from "@/components/HoneypotField";
 
 export default function LeadGate({ onSubmit, onBack }) {
   const [known] = useState(getKnownProfile);
@@ -12,6 +14,8 @@ export default function LeadGate({ onSubmit, onBack }) {
   const [company, setCompany] = useState(known.company || "");
   const [industry, setIndustry] = useState(known.industry || "");
   const [teamSize, setTeamSize] = useState(known.teamSize || "");
+  const [consent, setConsent] = useState(false);
+  const [hp, setHp] = useState("");
   const [errors, setErrors] = useState({});
 
   const submit = (e) => {
@@ -32,9 +36,11 @@ export default function LeadGate({ onSubmit, onBack }) {
       company: company.trim(),
       industry,
       teamSize,
+      consent,
+      hp,
     };
-    saveKnownProfile(profileData);
-    onSubmit(profileData);
+    const { isRetake, firstCapturedAt } = recordCapture(profileData);
+    onSubmit({ ...profileData, isRetake, firstCapturedAt });
   };
 
   return (
@@ -153,6 +159,9 @@ export default function LeadGate({ onSubmit, onBack }) {
           </select>
           {errors.teamSize && <div style={errorStyle}>{errors.teamSize}</div>}
         </div>
+
+        <HoneypotField value={hp} onChange={setHp} />
+        <ConsentCheckbox checked={consent} onChange={setConsent} id="rg-consent" />
 
         <button
           type="submit"

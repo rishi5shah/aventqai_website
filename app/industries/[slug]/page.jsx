@@ -98,15 +98,28 @@ export default async function IndustryPage({ params }) {
         </div>
       </section>
 
-      {/* Trust signals */}
-      <section style={{ borderTop: "1px solid rgba(23,21,15,0.12)", borderBottom: "1px solid rgba(23,21,15,0.12)", background: "var(--cream-alt)" }}>
-        <div className="container" style={{ paddingTop: 26, paddingBottom: 26, display: "flex", alignItems: "center", gap: 40, flexWrap: "wrap" }}>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", color: "var(--faint)", textTransform: "uppercase", whiteSpace: "nowrap" }}>
-            Trusted in regulated, audited industries
-          </span>
-          <div style={{ display: "flex", gap: 40, flexWrap: "wrap", alignItems: "center", opacity: 0.82 }}>
-            {data.trustSignals.map((s) => (
-              <span key={s} style={{ fontFamily: "var(--font-serif)", fontSize: 20, color: "var(--ink)" }}>{s}</span>
+      {/* Security & data, industry-ordered */}
+      <section style={{ background: "var(--cream-alt)", borderTop: "1px solid rgba(23,21,15,0.12)", borderBottom: "1px solid rgba(23,21,15,0.12)" }}>
+        <div className="container" style={{ paddingTop: 80, paddingBottom: 80 }}>
+          <div style={eyebrow}>Security & data</div>
+          <h2 className="t-44" style={sectionH2}>Built to be trusted with your data.</h2>
+          <div className="g-3" style={{ gap: 1, background: "rgba(23,21,15,0.14)", marginBottom: 36 }}>
+            {data.security.items.map((item) => (
+              <div key={item.title} style={{ background: "var(--cream)", padding: "28px 24px 32px" }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--terra)" }}>{item.line}</div>
+                <h3 style={{ fontFamily: "var(--font-serif)", fontWeight: 400, fontSize: 21, margin: "14px 0 8px", color: "var(--ink)" }}>{item.title}</h3>
+                <p style={{ fontSize: 14.5, lineHeight: 1.6, color: "var(--muted)", margin: 0 }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", color: "var(--faint)", textTransform: "uppercase", marginRight: 8 }}>
+              Aligned to
+            </span>
+            {data.security.badges.map((b) => (
+              <span key={b} style={{ fontSize: 14.5, color: "var(--navy)", border: "1px solid rgba(22,50,79,0.25)", padding: "9px 18px", borderRadius: 100 }}>
+                {b}
+              </span>
             ))}
           </div>
         </div>

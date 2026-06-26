@@ -4,15 +4,25 @@ import { useState } from "react";
 import Link from "next/link";
 import { resolveCta } from "@/lib/readiness";
 import { track, EVENTS } from "@/lib/analytics";
+import EmailReportCapture from "./EmailReportCapture";
 
-export default function ResultScreen({ result, profile, onRestart }) {
+export default function ResultScreen({ result, profile, onRestart, gateBeforeResult = true, onCapture }) {
   const { score, tier, breakdown } = result;
-  const cta = resolveCta(tier, profile.industry);
+  const cta = resolveCta(tier, profile?.industry);
   const [playbookSent, setPlaybookSent] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const onPrimaryClick = () => {
     const evt = cta.kind === "book" ? EVENTS.CTA_BOOK_CLICKED : EVENTS.CTA_SECONDARY_CLICKED;
-    track(evt, { tier: tier.key, score, industry: profile.industry, cta: cta.kind });
+    track(evt, { tier: tier.key, score, industry: profile?.industry, cta: cta.kind });
+  };
+
+  const copyShareLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch {}
   };
 
   return (
@@ -43,6 +53,12 @@ export default function ResultScreen({ result, profile, onRestart }) {
       <p style={{ fontSize: 17, lineHeight: 1.6, color: "var(--muted)", margin: "0 0 36px", maxWidth: "54ch" }}>
         {tier.blurb}
       </p>
+
+      {!gateBeforeResult && !profile && (
+        <div style={{ marginBottom: 36 }}>
+          <EmailReportCapture onCapture={onCapture} />
+        </div>
+      )}
 
       {/* Per-dimension breakdown */}
       <div style={{ borderTop: "1px solid rgba(23,21,15,0.14)", marginBottom: 36 }}>
@@ -141,7 +157,7 @@ export default function ResultScreen({ result, profile, onRestart }) {
           <Link
             href="/contact?context=strategy-session"
             onClick={() =>
-              track(EVENTS.CTA_BOOK_CLICKED, { tier: tier.key, score, industry: profile.industry, cta: "book-secondary" })
+              track(EVENTS.CTA_BOOK_CLICKED, { tier: tier.key, score, industry: profile?.industry, cta: "book-secondary" })
             }
             className="btn-outline-ink"
             style={{
@@ -161,22 +177,38 @@ export default function ResultScreen({ result, profile, onRestart }) {
         )}
       </div>
 
-      <button
-        onClick={onRestart}
-        style={{
-          marginTop: 28,
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          padding: "8px 0",
-          fontFamily: "var(--font-sans)",
-          fontSize: 14.5,
-          fontWeight: 600,
-          color: "var(--muted-2)",
-        }}
-      >
-        ↺ Retake the assessment
-      </button>
+      <div style={{ display: "flex", gap: 24, flexWrap: "wrap", marginTop: 28 }}>
+        <button
+          onClick={copyShareLink}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: "8px 0",
+            fontFamily: "var(--font-sans)",
+            fontSize: 14.5,
+            fontWeight: 600,
+            color: "var(--muted-2)",
+          }}
+        >
+          {linkCopied ? "✓ Link copied" : "↗ Copy share link"}
+        </button>
+        <button
+          onClick={onRestart}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: "8px 0",
+            fontFamily: "var(--font-sans)",
+            fontSize: 14.5,
+            fontWeight: 600,
+            color: "var(--muted-2)",
+          }}
+        >
+          ↺ Retake the assessment
+        </button>
+      </div>
     </div>
   );
 }

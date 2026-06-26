@@ -17,6 +17,15 @@ export async function POST(request) {
 
   const { firstName, email, industry, teamSize, score, tier } = data || {};
 
+  // Honeypot: a real user never fills this (it's invisible). Bots that
+  // blindly fill every input do. Accept-but-discard so we don't reveal the
+  // trap, and never forward it to the CRM.
+  if (data?.hp) {
+    // eslint-disable-next-line no-console
+    console.log("[lead] blocked: honeypot filled");
+    return Response.json({ ok: true });
+  }
+
   // Minimal shape validation (the client also validates before submit). Only
   // email is universally required — lighter-weight captures like exit-intent
   // collect email alone.
@@ -38,6 +47,9 @@ export async function POST(request) {
     answers: data.answers || null,
     source: data.source || "readiness",
     context: data.context || null,
+    consent: data.consent === true,
+    isRetake: data.isRetake === true,
+    firstCapturedAt: data.firstCapturedAt || null,
     receivedAt: new Date().toISOString(),
   };
 

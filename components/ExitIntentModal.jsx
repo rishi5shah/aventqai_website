@@ -4,12 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { fieldStyle, labelStyle, errorStyle, isValidEmail } from "@/lib/forms";
 import { submitLead } from "@/lib/leadSubmit";
-import { saveKnownProfile } from "@/lib/leadProfile";
+import { recordCapture } from "@/lib/leadProfile";
 import { track, EVENTS } from "@/lib/analytics";
 import { EXIT_INTENT_ENABLED, EXIT_INTENT_SKIP_PATHS } from "@/lib/exitIntent";
+import ConsentCheckbox from "@/components/ConsentCheckbox";
+import HoneypotField from "@/components/HoneypotField";
 
-const SHOWN_KEY = "aq_exit_intent_shown";
+const SHOWN_KEY = "aq_exit_intent_shown"; // per-session cap
+const DISMISSED_KEY = "aq_exit_intent_dismissed"; // permanent "don't show again"
 const ARM_DELAY_MS = 4000; // ignore exit gestures during the first few seconds on a page
+const MOBILE_FALLBACK_MS = 30000; // touch devices have no mouseleave signal — fall back to a timer
 
 export default function ExitIntentModal() {
   const pathname = usePathname();
@@ -17,25 +21,31 @@ export default function ExitIntentModal() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
+  const [consent, setConsent] = useState(false);
+  const [hp, setHp] = useState("");
   const armedRef = useRef(false);
 
   const skip = !EXIT_INTENT_ENABLED || EXIT_INTENT_SKIP_PATHS.includes(pathname);
+
+  const dismissForever = () => {
+    try {
+      localStorage.setItem(DISMISSED_KEY, "1");
+    } catch {}
+  };
+
+  const close = () => {
+    setOpen(false);
+    dismissForever();
+  };
 
   useEffect(() => {
     if (skip) return;
     try {
       if (sessionStorage.getItem(SHOWN_KEY) === "1") return;
+      if (localStorage.getItem(DISMISSED_KEY) === "1") return;
     } catch {}
 
-    armedRef.current = false;
-    const armTimer = setTimeout(() => {
-      armedRef.current = true;
-    }, ARM_DELAY_MS);
-
-    const onMouseOut = (e) => {
-      if (!armedRef.current) return;
-      // Only fire when the cursor actually leaves the top of the viewport.
-      if (e.relatedTarget || e.clientY > 0) return;
+    const show = () => {
       armedRef.current = false;
       setOpen(true);
       try {
@@ -44,9 +54,35 @@ export default function ExitIntentModal() {
       track(EVENTS.EXIT_INTENT_SHOWN, { path: pathname });
     };
 
+    const isCoarsePointer =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(pointer: coarse)").matches;
+
+    armedRef.current = false;
+    const armTimer = setTimeout(() => {
+      armedRef.current = true;
+    }, ARM_DELAY_MS);
+
+    // Touch devices never fire a real mouseleave-to-top gesture — fall back
+    // to a timed prompt instead.
+    let fallbackTimer;
+    if (isCoarsePointer) {
+      fallbackTimer = setTimeout(show, MOBILE_FALLBACK_MS);
+    }
+
+    const onMouseOut = (e) => {
+      if (!armedRef.current) return;
+      // Only fire when the cursor actually leaves the top of the viewport.
+      if (e.relatedTarget || e.clientY > 0) return;
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+      show();
+    };
+
     document.addEventListener("mouseout", onMouseOut);
     return () => {
       clearTimeout(armTimer);
+      if (fallbackTimer) clearTimeout(fallbackTimer);
       document.removeEventListener("mouseout", onMouseOut);
     };
   }, [skip, pathname]);
@@ -54,7 +90,7 @@ export default function ExitIntentModal() {
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") close();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -71,13 +107,22 @@ export default function ExitIntentModal() {
     setError("");
     setSent(true);
     track(EVENTS.EXIT_INTENT_CONVERTED, { path: pathname });
-    saveKnownProfile({ email: email.trim() });
-    submitLead({ source: "exit-intent", email: email.trim(), capturedAt: new Date().toISOString() });
+    const { isRetake, firstCapturedAt } = recordCapture({ email: email.trim() });
+    dismissForever(); // already converted — never show this again on this device
+    submitLead({
+      source: "exit-intent",
+      email: email.trim(),
+      capturedAt: new Date().toISOString(),
+      consent,
+      hp,
+      isRetake,
+      firstCapturedAt,
+    });
   };
 
   return (
     <div
-      onClick={() => setOpen(false)}
+      onClick={close}
       style={{
         position: "fixed",
         inset: 0,
@@ -103,7 +148,7 @@ export default function ExitIntentModal() {
         }}
       >
         <button
-          onClick={() => setOpen(false)}
+          onClick={close}
           aria-label="Close"
           style={{
             position: "absolute",
@@ -183,6 +228,8 @@ export default function ExitIntentModal() {
                 />
                 {error && <div style={errorStyle}>{error}</div>}
               </div>
+              <HoneypotField value={hp} onChange={setHp} />
+              <ConsentCheckbox checked={consent} onChange={setConsent} id="ei-consent" />
               <button
                 type="submit"
                 className="btn-navy"
