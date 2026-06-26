@@ -11,7 +11,9 @@ const STEPS = [
   ["03", "A short, honest opportunity read: what's worth doing first."],
 ];
 
-export default function Contact() {
+export default async function Contact({ searchParams }) {
+  const params = await searchParams;
+  const context = typeof params?.context === "string" ? params.context : "";
   return (
     <section className="container g-2" style={{ paddingTop: 80, paddingBottom: 96, gap: 80 }}>
       <div>
@@ -70,7 +72,7 @@ export default function Contact() {
         </div>
       </div>
 
-      <ContactForm />
+      <ContactForm context={context} />
     </section>
   );
 }

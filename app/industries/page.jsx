@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PageHero from "@/components/PageHero";
 
 export const metadata = {
@@ -8,24 +9,28 @@ export const metadata = {
 const INDUSTRIES = [
   {
     id: "A1",
+    slug: "accounting",
     title: "Accounting & Tax Consulting",
     pain: ["Manual reconciliations", "Tax planning bottlenecks", "Document collection", "Notice handling", "Client follow-ups"],
     deploy: ["Intelligent Reconciliation", "Tax Optimization Agent", "Notice Analysis Agent", "Client Communication Automation", "Compliance Workflows"],
   },
   {
     id: "M2",
+    slug: "manufacturing",
     title: "Manufacturing",
     pain: ["Production delays", "Vendor coordination", "Procurement bottlenecks", "Reporting gaps", "Operational visibility"],
     deploy: ["Production Intelligence", "Procurement Agents", "Vendor Coordination Systems", "Predictive Alerts", "Operational Dashboards"],
   },
   {
     id: "L3",
+    slug: "logistics",
     title: "Logistics",
     pain: ["Shipment delays", "Documentation issues", "Communication fragmentation", "Manual escalations", "Poor visibility"],
     deploy: ["Shipment Intelligence", "Workflow Automation", "Delay Prediction", "Escalation Systems", "Logistics Dashboards"],
   },
   {
     id: "F4",
+    slug: "law",
     title: "Law Firms",
     pain: ["Manual document review", "Contract analysis & clause extraction", "Legal research across sources", "Matter & deadline management", "Compliance monitoring"],
     deploy: ["Legal Research Intelligence", "Contract Intelligence", "Matter Management Intelligence", "Compliance Intelligence", "Client Operations Intelligence"],
@@ -67,9 +72,14 @@ export default function Industries() {
       <section className="container" style={{ paddingBottom: 96, display: "grid", gap: 24 }}>
         {INDUSTRIES.map((ind) => (
           <div key={ind.id} style={{ background: "var(--card)", border: "1px solid rgba(23,21,15,0.12)", borderRadius: 14, padding: 44 }}>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 32 }}>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--faintest)" }}>{ind.id}</span>
-              <h2 style={{ fontFamily: "var(--font-serif)", fontWeight: 400, fontSize: 34, margin: 0, color: "var(--ink)" }}>{ind.title}</h2>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 16, marginBottom: 32, flexWrap: "wrap" }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 16 }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--faintest)" }}>{ind.id}</span>
+                <h2 style={{ fontFamily: "var(--font-serif)", fontWeight: 400, fontSize: 34, margin: 0, color: "var(--ink)" }}>{ind.title}</h2>
+              </div>
+              <Link href={`/industries/${ind.slug}`} className="link-email" style={{ fontFamily: "var(--font-sans)", fontSize: 14.5, fontWeight: 600, color: "var(--navy)", textDecoration: "none", whiteSpace: "nowrap" }}>
+                See the full industry page →
+              </Link>
             </div>
             <div className="g-2" style={{ gap: 40 }}>
               <div>

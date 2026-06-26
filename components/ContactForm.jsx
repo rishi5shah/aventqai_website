@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fieldStyle, labelStyle, isValidEmail } from "@/lib/forms";
+import { submitLead, flushQueue } from "@/lib/leadSubmit";
+import { getKnownProfile, saveKnownProfile } from "@/lib/leadProfile";
 
 const PLACEHOLDERS = {
   "Accounting & Tax": "e.g. month-end reconciliation, notice handling, client follow-ups…",
@@ -12,28 +15,15 @@ const PLACEHOLDERS = {
 
 const INDUSTRIES = ["Accounting & Tax", "Law Firm", "Manufacturing", "Logistics", "Other"];
 
-const fieldStyle = {
-  width: "100%",
-  padding: "13px 14px",
-  border: "1px solid rgba(23,21,15,0.18)",
-  borderRadius: 8,
-  background: "var(--cream)",
-  fontFamily: "var(--font-sans)",
-  fontSize: 15,
-  color: "var(--ink)",
-  outline: "none",
+// Human labels for the ?context= param set by readiness-assessment CTAs.
+const CONTEXT_LABELS = {
+  "strategy-session": "AI Strategy Session",
+  "readiness-workshop": "Readiness Workshop",
+  "prep-playbook": "Prep Playbook",
 };
 
-const labelStyle = {
-  display: "block",
-  fontSize: 13,
-  color: "var(--faint)",
-  marginBottom: 8,
-  fontFamily: "var(--font-mono)",
-  letterSpacing: "0.06em",
-};
-
-export default function ContactForm() {
+export default function ContactForm({ context = "" }) {
+  const contextLabel = CONTEXT_LABELS[context] || "";
   const [fName, setFName] = useState("");
   const [fEmail, setFEmail] = useState("");
   const [fIndustry, setFIndustry] = useState("Accounting & Tax");
@@ -42,17 +32,18 @@ export default function ContactForm() {
   const [errorEmail, setErrorEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  // Restore draft on mount
+  // Restore draft on mount; fall back to fields known from earlier forms
+  // (progressive profiling) when there's no in-progress draft.
   useEffect(() => {
     try {
       const d = JSON.parse(localStorage.getItem("aq_form_draft") || "null");
-      if (d) {
-        setFName(d.fName || "");
-        setFEmail(d.fEmail || "");
-        setFIndustry(d.fIndustry || "Accounting & Tax");
-        setFMessage(d.fMessage || "");
-      }
+      const known = getKnownProfile();
+      setFName(d?.fName || known.firstName || "");
+      setFEmail(d?.fEmail || known.email || "");
+      setFIndustry(d?.fIndustry || known.industry || "Accounting & Tax");
+      setFMessage(d?.fMessage || "");
     } catch {}
+    flushQueue(); // retry any leads stranded by an earlier failed POST
   }, []);
 
   const saveDraft = (next) => {
@@ -69,7 +60,7 @@ export default function ContactForm() {
     const eName = fName.trim() ? "" : "Please enter your name";
     let eEmail = "";
     if (!fEmail.trim()) eEmail = "Please enter your email";
-    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(fEmail.trim())) eEmail = "Enter a valid email address";
+    else if (!isValidEmail(fEmail)) eEmail = "Enter a valid email address";
     if (eName || eEmail) {
       setErrorName(eName);
       setErrorEmail(eEmail);
@@ -77,10 +68,20 @@ export default function ContactForm() {
     }
     try {
       const subs = JSON.parse(localStorage.getItem("aq_submissions") || "[]");
-      subs.push({ name: fName, email: fEmail, industry: fIndustry, message: fMessage, at: new Date().toISOString() });
+      subs.push({ name: fName, email: fEmail, industry: fIndustry, message: fMessage, context: context || null, at: new Date().toISOString() });
       localStorage.setItem("aq_submissions", JSON.stringify(subs));
       localStorage.removeItem("aq_form_draft");
     } catch {}
+    saveKnownProfile({ firstName: fName.trim(), email: fEmail.trim(), industry: fIndustry });
+    // Fire-and-forget: the success state renders immediately either way.
+    submitLead({
+      source: "contact",
+      firstName: fName.trim(),
+      email: fEmail.trim(),
+      industry: fIndustry,
+      message: fMessage,
+      context: context || null,
+    });
     setSubmitted(true);
     setErrorName("");
     setErrorEmail("");
@@ -117,6 +118,22 @@ export default function ContactForm() {
         </div>
       ) : (
         <form onSubmit={onSubmit} style={{ display: "grid", gap: 22 }}>
+          {contextLabel && (
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 12,
+                letterSpacing: "0.08em",
+                color: "var(--navy)",
+                background: "rgba(22,50,79,0.06)",
+                border: "1px solid rgba(22,50,79,0.18)",
+                borderRadius: 8,
+                padding: "10px 14px",
+              }}
+            >
+              Requested: {contextLabel}
+            </div>
+          )}
           <div>
             <label htmlFor="aq-name" style={labelStyle}>FULL NAME</label>
             <input

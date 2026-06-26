@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import CTA from "@/components/CTA";
 import BackToTop from "@/components/BackToTop";
 import SiteMain from "@/components/SiteMain";
+import ExitIntentModal from "@/components/ExitIntentModal";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -54,6 +55,7 @@ export default function RootLayout({ children }) {
           <CTA />
           <Footer />
           <BackToTop />
+          <ExitIntentModal />
         </div>
       </body>
     </html>

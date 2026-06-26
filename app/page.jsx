@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Faq from "@/components/Faq";
+import HeroSecondaryCta from "@/components/HeroSecondaryCta";
 
 const eyebrow = {
   fontFamily: "var(--font-mono)",
@@ -22,10 +23,10 @@ const sectionH2 = {
 const monoLineDark = { fontFamily: "var(--font-mono)", fontSize: 12, color: "rgba(244,241,233,0.5)" };
 
 const INDUSTRY_ROWS = [
-  { id: "A1", title: "Accounting & Tax", desc: "Reconciliation, tax optimization, notice handling, and client communication — automated." },
-  { id: "M2", title: "Manufacturing", desc: "Production intelligence, procurement agents, vendor coordination, and predictive alerts." },
-  { id: "L3", title: "Logistics", desc: "Shipment intelligence, delay prediction, escalation systems, and live visibility dashboards." },
-  { id: "F4", title: "Law Firms", desc: "Legal research, contract intelligence, matter management, and compliance — connected." },
+  { id: "A1", slug: "accounting", title: "Accounting & Tax", desc: "Reconciliation, tax optimization, notice handling, and client communication — automated." },
+  { id: "M2", slug: "manufacturing", title: "Manufacturing", desc: "Production intelligence, procurement agents, vendor coordination, and predictive alerts." },
+  { id: "L3", slug: "logistics", title: "Logistics", desc: "Shipment intelligence, delay prediction, escalation systems, and live visibility dashboards." },
+  { id: "F4", slug: "law", title: "Law Firms", desc: "Legal research, contract intelligence, matter management, and compliance — connected." },
 ];
 
 const STEPS = [
@@ -73,6 +74,7 @@ export default function Home() {
                 Explore use cases
               </Link>
             </div>
+            <HeroSecondaryCta />
           </div>
 
           {/* operational readout panel */}
@@ -169,7 +171,7 @@ export default function Home() {
           {INDUSTRY_ROWS.map((row) => (
             <Link
               key={row.id}
-              href="/industries"
+              href={`/industries/${row.slug}`}
               className="g-irow row-tint"
               style={{ width: "100%", textAlign: "left", textDecoration: "none", borderBottom: "1px solid rgba(23,21,15,0.14)", padding: "30px 8px", gap: 30, alignItems: "center" }}
             >
