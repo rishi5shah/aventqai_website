@@ -2,7 +2,7 @@ import PageHero from "@/components/PageHero";
 
 export const metadata = {
   title: "Case Studies — AventeQ",
-  description: "Representative AI engagements across accounting, manufacturing, and logistics.",
+  description: "Representative AI engagements across accounting, manufacturing, logistics, and real estate.",
 };
 
 const CASES = [
@@ -26,6 +26,13 @@ const CASES = [
     body: "Shipment Intelligence plus automated escalation workflows replaced a tangle of email threads, so exceptions get caught, routed, and resolved without manual chasing.",
     stat: "3×",
     statLabel: "faster exception handling",
+  },
+  {
+    tag: "Real Estate",
+    title: "A regional brokerage cuts listing prep time in half.",
+    body: "A Listing Document Automation agent now assembles property descriptions, disclosures, and closing paperwork directly from intake data — what used to take an afternoon per listing now starts ready for review.",
+    stat: "50%",
+    statLabel: "less time on listing prep",
   },
 ];
 

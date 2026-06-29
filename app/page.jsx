@@ -33,6 +33,7 @@ const INDUSTRY_ROWS = [
   { id: "M2", slug: "manufacturing", title: "Manufacturing", desc: "Production intelligence, procurement agents, vendor coordination, and predictive alerts." },
   { id: "L3", slug: "logistics", title: "Logistics", desc: "Shipment intelligence, delay prediction, escalation systems, and live visibility dashboards." },
   { id: "F4", slug: "law", title: "Law Firms", desc: "Legal research, contract intelligence, matter management, and compliance — connected." },
+  { id: "E5", slug: "real-estate", title: "Real Estate", desc: "Lease abstraction, listing automation, tenant communication, and deal pipeline tracking — connected." },
 ];
 
 const STEPS = [
@@ -70,7 +71,7 @@ export default function Home() {
               AI for real operations. Not just experiments.
             </h1>
             <p style={{ fontSize: 19, lineHeight: 1.6, color: "var(--muted)", maxWidth: "56ch", margin: "34px 0 0" }}>
-              AventeQ helps accounting firms, law firms, manufacturers, and logistics companies implement AI across their workflows — through consulting, custom systems, and the training to make it stick.
+              AventeQ helps accounting firms, law firms, manufacturers, logistics companies, and real estate firms implement AI across their workflows — through consulting, custom systems, and the training to make it stick.
             </p>
             <div style={{ display: "flex", gap: 14, marginTop: 40, flexWrap: "wrap" }}>
               <Link href="/contact" className="btn-navy" style={{ fontFamily: "var(--font-sans)", fontSize: 15, fontWeight: 600, color: "var(--cream)", background: "var(--navy)", textDecoration: "none", padding: "15px 28px", borderRadius: 8 }}>
@@ -115,7 +116,7 @@ export default function Home() {
         <div style={{ height: 1, background: "rgba(23,21,15,0.12)", margin: "64px 0 0" }} />
         <div className="g-3" style={{ gap: 1, background: "rgba(23,21,15,0.12)" }}>
           {[
-            ["4 sectors", "accounting, law, manufacturing, and logistics — where we go deep, not wide.", "30px 28px 4px"],
+            ["5 sectors", "accounting, law, manufacturing, logistics, and real estate — where we go deep, not wide.", "30px 28px 4px"],
             ["6 steps", "a proven method from readiness assessment to continuous optimization.", "30px 28px 4px"],
             ["Weeks", "to your first AI system running in production — not quarters.", "30px 28px 4px"],
           ].map(([num, desc, padding]) => (
@@ -134,7 +135,7 @@ export default function Home() {
             Trusted in regulated, audited industries
           </span>
           <div style={{ display: "flex", gap: 40, flexWrap: "wrap", alignItems: "center", opacity: 0.82 }}>
-            {["Mid-size CA firms", "Component manufacturers", "Freight & 3PL operators", "Boutique law firms"].map((s) => (
+            {["Mid-size CA firms", "Component manufacturers", "Freight & 3PL operators", "Boutique law firms", "Regional real estate brokerages"].map((s) => (
               <span key={s} style={{ fontFamily: "var(--font-serif)", fontSize: 20, color: "var(--ink)" }}>{s}</span>
             ))}
           </div>
@@ -209,7 +210,7 @@ export default function Home() {
       {/* Industries strip */}
       <section className="container" style={{ paddingTop: 92, paddingBottom: 92 }}>
         <div style={{ ...eyebrow }}>02 — Industries</div>
-        <h2 className="t-44" style={{ ...sectionH2, margin: "0 0 48px", maxWidth: "18ch" }}>We go deep in four industries.</h2>
+        <h2 className="t-44" style={{ ...sectionH2, margin: "0 0 48px", maxWidth: "18ch" }}>We go deep in five industries.</h2>
         <div style={{ borderTop: "1px solid rgba(23,21,15,0.14)" }}>
           {INDUSTRY_ROWS.map((row) => (
             <Link

@@ -16,7 +16,7 @@ const JOURNEY = [
   ["2023", "Founded to bring AI into operationally complex businesses."],
   ["2024", "First AI agents deployed across accounting and manufacturing clients."],
   ["2025", "Launched corporate AI training as a standalone practice."],
-  ["2026", "Scaling consulting, implementation, and enablement across four sectors."],
+  ["2026", "Scaling consulting, implementation, and enablement across five sectors."],
 ];
 
 export default function About() {
@@ -30,7 +30,7 @@ export default function About() {
           AventeQ is an AI transformation company for operationally complex businesses.
         </h1>
         <p style={{ fontSize: 19, lineHeight: 1.6, color: "var(--muted)", maxWidth: "60ch", margin: "30px 0 0" }}>
-          We help accounting firms, law firms, manufacturers, and logistics companies identify high-impact AI opportunities, implement intelligent operational systems, and train their workforce to adopt AI effectively.
+          We help accounting firms, law firms, manufacturers, logistics companies, and real estate firms identify high-impact AI opportunities, implement intelligent operational systems, and train their workforce to adopt AI effectively.
         </p>
       </section>
 

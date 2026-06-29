@@ -3,7 +3,7 @@ import PageHero from "@/components/PageHero";
 
 export const metadata = {
   title: "Industries — AventeQ",
-  description: "We know your operations before we build. AI for accounting, manufacturing, logistics, and law firms.",
+  description: "We know your operations before we build. AI for accounting, manufacturing, logistics, law, and real estate firms.",
 };
 
 const INDUSTRIES = [
@@ -34,6 +34,13 @@ const INDUSTRIES = [
     title: "Law Firms",
     pain: ["Manual document review", "Contract analysis & clause extraction", "Legal research across sources", "Matter & deadline management", "Compliance monitoring"],
     deploy: ["Legal Research Intelligence", "Contract Intelligence", "Matter Management Intelligence", "Compliance Intelligence", "Client Operations Intelligence"],
+  },
+  {
+    id: "E5",
+    slug: "real-estate",
+    title: "Real Estate",
+    pain: ["Lease & contract review", "Listing & document prep", "Tenant & buyer communication", "Market & valuation research", "Deal coordination"],
+    deploy: ["Lease Abstraction Agent", "Listing Document Automation", "Tenant Communication Automation", "Market Intelligence Agent", "Deal Pipeline Intelligence"],
   },
 ];
 
@@ -66,7 +73,7 @@ export default function Industries() {
         title="We know your operations before we build."
         titleMaxWidth="16ch"
         leadMaxWidth="54ch"
-        lead="Four industries, each with its own bottlenecks. We map the pain, then deploy the AI that removes it."
+        lead="Five industries, each with its own bottlenecks. We map the pain, then deploy the AI that removes it."
       />
 
       <section className="container" style={{ paddingBottom: 96, display: "grid", gap: 24 }}>

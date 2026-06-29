@@ -12,10 +12,11 @@ const PLACEHOLDERS = {
   "Law Firm": "e.g. contract review, legal research, matter & deadline management…",
   Manufacturing: "e.g. vendor delays, procurement coordination, production visibility…",
   Logistics: "e.g. shipment exceptions, delay prediction, escalation chasing…",
+  "Real Estate": "e.g. lease review, listing prep, tenant communication…",
   Other: "Which operations or workflows are you hoping AI could help with?",
 };
 
-const INDUSTRIES = ["Accounting & Tax", "Law Firm", "Manufacturing", "Logistics", "Other"];
+const INDUSTRIES = ["Accounting & Tax", "Law Firm", "Manufacturing", "Logistics", "Real Estate", "Other"];
 
 // Human labels for the ?context= param set by readiness-assessment CTAs.
 const CONTEXT_LABELS = {

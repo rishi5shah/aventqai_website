@@ -6,7 +6,7 @@ export const metadata = {
   description: "Corporate AI workshops built around real operational work. Tailored by role, run on-site or remote.",
 };
 
-const AUDIENCE = ["CXOs", "Finance Teams", "Operations Teams", "Manufacturing Teams", "Logistics Teams"];
+const AUDIENCE = ["CXOs", "Finance Teams", "Operations Teams", "Manufacturing Teams", "Logistics Teams", "Real Estate Teams"];
 
 const PROGRAMS = [
   "AI for Business Leaders",
@@ -15,6 +15,7 @@ const PROGRAMS = [
   "AI for Manufacturing",
   "AI for Logistics",
   "AI for Law Firms",
+  "AI for Real Estate Teams",
   "Prompt Engineering for Enterprise Teams",
   "AI Productivity Workshops",
 ];

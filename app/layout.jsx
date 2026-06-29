@@ -1,4 +1,5 @@
 import { Newsreader, Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -35,7 +36,7 @@ const favicon =
 export const metadata = {
   title: "AventeQ — AI for real operations",
   description:
-    "AventeQ helps accounting firms, law firms, manufacturers, and logistics companies implement AI across their operations — through consulting, custom systems, and the training to make it stick.",
+    "AventeQ helps accounting firms, law firms, manufacturers, logistics companies, and real estate firms implement AI across their operations — through consulting, custom systems, and the training to make it stick.",
   icons: { icon: favicon },
   openGraph: {
     title: "AventeQ — AI for real operations",
@@ -49,6 +50,28 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${newsreader.variable} ${hanken.variable} ${plexMono.variable}`}>
       <body>
+        <Script
+          id="microsoft-clarity"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "xepfgfqfqy");
+            `,
+          }}
+        />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-4KSKSKKYE0" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-4KSKSKKYE0');
+          `}
+        </Script>
         <div style={{ minHeight: "100vh", position: "relative", overflowX: "hidden" }}>
           <Header />
           <SiteMain>{children}</SiteMain>

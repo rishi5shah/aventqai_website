@@ -1,6 +1,6 @@
 # AventeQ AI — Marketing Website
 
-A multi-page marketing site for **AventeQ AI**, an AI transformation company serving operationally complex businesses (accounting/tax firms, law firms, manufacturers, logistics companies).
+A multi-page marketing site for **AventeQ AI**, an AI transformation company serving operationally complex businesses (accounting/tax firms, law firms, manufacturers, logistics companies, real estate firms).
 
 Built with **Next.js (App Router)** as real, statically-rendered routes — recreated from the high-fidelity design handoff in [`design_handoff_aventeq_website/`](design_handoff_aventeq_website/).
 
@@ -49,7 +49,7 @@ A lead-capture funnel layered on top of the marketing site. Built in tasks; this
 | Route | What it is |
 |---|---|
 | `/readiness` | AI Readiness Assessment — 6-question scorecard → lead-capture gate → tier-routed result. |
-| `/industries/{accounting\|manufacturing\|logistics\|law}` | Per-industry landing pages — one shared template (`app/industries/[slug]/page.jsx`) driven by `lib/industries.js`. Pain points, use cases, a case study, trust signals, and dual-tier CTAs (book a session / take the assessment), repeated mid-page and at the end. |
+| `/industries/{accounting\|manufacturing\|logistics\|law\|real-estate}` | Per-industry landing pages — one shared template (`app/industries/[slug]/page.jsx`) driven by `lib/industries.js`. Pain points, use cases, a case study, trust signals, and dual-tier CTAs (book a session / take the assessment), repeated mid-page and at the end. |
 | `/contact?context=<key>` | Contact page; the `context` param is shown on the form and stored with the submission. Keys: `strategy-session`, `readiness-workshop`, `prep-playbook`. |
 | `POST /api/lead` | Lead submission endpoint (see below). |
 
@@ -95,7 +95,9 @@ Flip the one constant to A/B test gate-first (more lead volume) against result-f
 ### Analytics events
 Centralized in `lib/analytics.js` (`EVENTS` map; `track(event, props)`). Currently emitted: `assessment_started`, `assessment_question_answered` (step, dimension, score), `assessment_gate_viewed`, `lead_captured` (industry, teamSize, tier, score), `assessment_completed` (score, tier), `cta_book_clicked` / `cta_secondary_clicked` (fired from the homepage hero, global CTA band, industry pages, and the readiness result screen — each tagged with a `placement`), `exit_intent_shown` / `exit_intent_converted` (path).
 
-`track()` pushes to `window.dataLayer` and calls `gtag()` if present — **vendor-agnostic, no vendor wired yet**. To enable GA4/GTM, add the tag/script in `app/layout.jsx`; events then flow automatically. No vendor = safe no-op (plus a dev-console line).
+`track()` pushes to `window.dataLayer` and calls `gtag()` if present — vendor-agnostic by design, so swapping/adding vendors never touches the event-firing code.
+
+**Wired up:** GA4 (Measurement ID `G-4KSKSKKYE0`, stream `https://www.aventeqai.com`) and Microsoft Clarity, both added in `app/layout.jsx` via `next/script`. Every funnel event already flows into both automatically — no other code changes needed when adding a vendor this way.
 
 ### Lead endpoint
 `app/api/lead/route.js` validates the payload (only `email` is required — exit-intent captures email alone), logs every lead, then forwards it to GoHighLevel via `lib/ghl.js`. Every lead source — the readiness assessment, the contact form, and exit-intent — POSTs here. The client (`lib/leadSubmit.js`) POSTs asynchronously with retries and a `localStorage` queue, so the UI never blocks and a failed POST is retried on next load. Forwarding to GHL never fails the request — if it's unconfigured or times out, the route still returns `ok:true` and the lead is still logged.
