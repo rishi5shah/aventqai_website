@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import PageHero from "@/components/PageHero";
 import IndustryCtaLinks from "@/components/IndustryCtaLinks";
+import OperationalPanel from "@/components/OperationalPanel";
 import { INDUSTRY_PAGES, INDUSTRY_SLUGS } from "@/lib/industries";
 
 const eyebrow = {
@@ -39,7 +39,23 @@ export default async function IndustryPage({ params }) {
 
   return (
     <>
-      <PageHero eyebrow={data.hero.eyebrow} title={data.hero.title} lead={data.hero.lead} titleMaxWidth="18ch" leadMaxWidth="56ch" />
+      {/* Hero, paired with a live "operational readout" for this industry */}
+      <section className="container" style={{ paddingTop: 80, paddingBottom: 56 }}>
+        <div className="g-hero" style={{ gap: 64, alignItems: "center" }}>
+          <div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.2em", color: "var(--terra)", textTransform: "uppercase", marginBottom: 26 }}>
+              {data.hero.eyebrow}
+            </div>
+            <h1 className="t-60" style={{ fontFamily: "var(--font-serif)", fontWeight: 400, lineHeight: 1.06, letterSpacing: "-0.02em", margin: 0, maxWidth: "18ch", color: "var(--ink)" }}>
+              {data.hero.title}
+            </h1>
+            <p style={{ fontSize: 19, lineHeight: 1.6, color: "var(--muted)", maxWidth: "52ch", margin: "30px 0 0" }}>
+              {data.hero.lead}
+            </p>
+          </div>
+          <OperationalPanel label={data.panel.label} rows={data.panel.rows} footerText={data.panel.footerText} />
+        </div>
+      </section>
 
       {/* Pain points */}
       <section className="container" style={{ paddingBottom: 80 }}>

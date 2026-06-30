@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Faq from "@/components/Faq";
 import HeroSecondaryCta from "@/components/HeroSecondaryCta";
+import OperationalPanel from "@/components/OperationalPanel";
 
 const eyebrow = {
   fontFamily: "var(--font-mono)",
@@ -85,32 +86,17 @@ export default function Home() {
           </div>
 
           {/* operational readout panel */}
-          <div className="hero-readout" style={{ background: "var(--near-black)", borderRadius: 14, padding: "26px 26px 28px", boxShadow: "0 24px 60px -28px rgba(20,19,15,0.5)" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: 16, borderBottom: "1px solid rgba(244,241,233,0.14)" }}>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "rgba(244,241,233,0.55)" }}>aventeq://operations</span>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.12em", color: "var(--green-light)", textTransform: "uppercase" }}>
-                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--green-light)", animation: "aq-blink 1.8s ease-in-out infinite" }} />
-                live
-              </span>
-            </div>
-            <div style={{ display: "grid", gap: 16, padding: "22px 0 4px" }}>
-              {[
-                ["reconciliation-agent", "1,284 / 1,284 matched", "var(--green-light)"],
-                ["procurement-agent", "vendor delay · HIGH ▲", "var(--terra-light)"],
-                ["notice-agent", "3 notices triaged", "rgba(244,241,233,0.6)"],
-                ["shipment-intel", "ETA variance −5.2d", "var(--green-light)"],
-              ].map(([name, status, color]) => (
-                <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "rgba(244,241,233,0.85)" }}>{name}</span>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 12.5, color }}>{status}</span>
-                </div>
-              ))}
-            </div>
-            <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(244,241,233,0.14)", fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--terra-light)" }}>
-              &gt; optimizing workflows
-              <span style={{ display: "inline-block", width: 8, height: 15, background: "var(--terra-light)", marginLeft: 4, transform: "translateY(2px)", animation: "aq-blink 1.1s step-end infinite" }} />
-            </div>
-          </div>
+          <OperationalPanel
+            className="hero-readout"
+            label="aventeq://operations"
+            rows={[
+              ["reconciliation-agent", "1,284 / 1,284 matched", "var(--green-light)"],
+              ["procurement-agent", "vendor delay · HIGH ▲", "var(--terra-light)"],
+              ["notice-agent", "3 notices triaged", "rgba(244,241,233,0.6)"],
+              ["shipment-intel", "ETA variance −5.2d", "var(--green-light)"],
+            ]}
+            footerText="optimizing workflows"
+          />
         </div>
 
         <div style={{ height: 1, background: "rgba(23,21,15,0.12)", margin: "64px 0 0" }} />
